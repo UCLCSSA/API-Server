@@ -33,13 +33,18 @@ export class ConfigService {
                              .required(),
             SSL_CERT_PATH: Joi.string()
                               .required(),
+            // Rate limits
+            RATE_LIMIT_WINDOW_MS: Joi.number()
+                                     .default(15 * 60 * 1000),
+            RATE_LIMIT_MAX: Joi.number()
+                               .default(100),
         });
 
         const { error, value: validatedEnvConfig } =
             Joi.validate(envConfig, envSchema);
 
         if (error) {
-            throw new Error(`Invalid config: ${error.message}`);
+            throw new Error(`Invalid config: ${ error.message }`);
         } else {
             return validatedEnvConfig;
         }
@@ -67,5 +72,13 @@ export class ConfigService {
 
     get sslCertificatePath(): string {
         return this.envConfig.SSL_CERT_PATH;
+    }
+
+    get rateLimitWindowMs(): number {
+        return parseInt(this.envConfig.RATE_LIMIT_WINDOW_MS, 10);
+    }
+
+    get rateLimitMax(): number {
+        return parseInt(this.envConfig.RATE_LIMIT_MAX, 10);
     }
 }
