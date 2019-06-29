@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import * as helmet from 'helmet';
@@ -32,6 +33,9 @@ const bootstrap = async () => {
         windowMs: RATE_LIMIT_WINDOW_MS,
         max: RATE_LIMIT_MAX,
     }));
+
+    // Validation
+    app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
     await app.listen(3000);
 };

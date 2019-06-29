@@ -6,6 +6,7 @@
   },
   "rules": {
     "quotemark": [true, "single"],
+    "indent": [true, "spaces", 4],
     "member-access": [false],
     "ordered-imports": [false],
     "max-line-length": [true, 150],
