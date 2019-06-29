@@ -42,4 +42,4 @@ ssl/localhost.key
 
 # ORM Config
 # Create one by `cp ormconfig.json.example ormconfig.json`
-ormconfig.json
+**/ormconfig.json
