@@ -1,4 +1,5 @@
-// See https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html.
+// See
+// https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html.
 export interface RawWeChatAuthResponse {
     readonly openid: string;
     // tslint:disable-next-line:variable-name
