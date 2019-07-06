@@ -36,8 +36,9 @@ export class UclcssaSessionKeyGenerator {
                     const hmac = crypto.createHmac('sha256', random);
                     hmac.update(payload);
                     // Hex (base 16) encoding is used to encode the generated
-                    // 256-bit uclcssaSessionKey, meaning that the
-                    // uclcssaSessionKey is 16 hex digits long.
+                    // 256-bit uclcssaSessionKey. As each hex digit can
+                    // represent 4 bits, the resulting hex-encoded
+                    // uclcssaSessionKey is 64 hex digits long.
                     const uclcssaSessionKey = hmac.digest('hex');
                     resolve(uclcssaSessionKey);
                 }
