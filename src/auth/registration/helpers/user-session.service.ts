@@ -17,15 +17,17 @@ export class UserSessionService {
     async saveSession(response: WeChatAuthResponse): Promise<string> {
         const userSession = new UserSession();
         userSession.openId = response.openId;
-        userSession.uclapiToken = null;
+        userSession.uclapiToken = '';
         userSession.weChatSessionKey = response.sessionKey;
         userSession.uclcssaSessionKey =
             await this.uclcssaSessionKeyGeneratorService
                       .generateUclcssaSessionKey(response.openId,
                           response.sessionKey);
+        // The creation datetime of the uclcssaSessionKey is recorded so
+        // that requests with uclcssaSessionKey can be checked for expiration.
         userSession.uclcssaSessionKeyCreatedAt = new Date();
 
-        const successfulSession =
+        const successfulSession: UserSession =
             await this.userSessionRepository.save(userSession);
 
         return successfulSession.uclcssaSessionKey;
