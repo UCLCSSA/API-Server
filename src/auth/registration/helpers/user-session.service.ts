@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UclcssaSessionKeyGenerator } from './uclcssa-session-key-generator';
@@ -21,7 +21,8 @@ export class UserSessionService {
         userSession.weChatSessionKey = response.sessionKey;
         userSession.uclcssaSessionKey =
             await this.uclcssaSessionKeyGeneratorService
-                      .generateUclcssaSessionKey(response.openId, response.sessionKey);
+                      .generateUclcssaSessionKey(response.openId,
+                          response.sessionKey);
         userSession.uclcssaSessionKeyCreatedAt = new Date();
 
         const successfulSession =

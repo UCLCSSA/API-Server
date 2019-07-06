@@ -4,7 +4,6 @@ import {
     HttpException,
     Injectable,
     UnauthorizedException,
-    ValidationPipe,
 } from '@nestjs/common';
 
 import axios from 'axios';
