@@ -29,10 +29,6 @@ export class ConfigService {
             // Required to obtain personal OAuth token from UCLAPI
             UCL_API_KEY: Joi.string().required(),
 
-            // Required for SSL
-            SSL_KEY_PATH: Joi.string().required(),
-            SSL_CERT_PATH: Joi.string().required(),
-
             // Rate limits
             RATE_LIMIT_WINDOW_MS: Joi.number().default(15 * 60 * 1000),
             RATE_LIMIT_MAX: Joi.number().default(100),
@@ -67,14 +63,6 @@ export class ConfigService {
 
     get uclApiKey(): string {
         return this.envConfig.UCL_API_KEY;
-    }
-
-    get sslKeyPath(): string {
-        return this.envConfig.SSL_KEY_PATH;
-    }
-
-    get sslCertificatePath(): string {
-        return this.envConfig.SSL_CERT_PATH;
     }
 
     get rateLimitWindowMs(): number {
