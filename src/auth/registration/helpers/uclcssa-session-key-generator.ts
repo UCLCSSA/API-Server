@@ -8,16 +8,18 @@ export class UclcssaSessionKeyGenerator {
         openId: string, sessionKey: string,
     ): Promise<string> {
         return new Promise((resolve, reject) => {
-            // The core data is composed of openId concatenated with sessionKey.
+            // The payload is composed of openId concatenated with sessionKey.
             // These data are obtained from WeChat API. We cannot return
             // WeChat's sessionKey directly due to client-side security issues.
             // Instead, we need to generate a new uclcssaSessionKey to act as a
-            // proxy - there is a one-to-one correspondence between
-            // uclcssaSessionKey <-> sessionKey. Requests made to WeChat APIs
-            // require the client to return uclcssaSessionKey, then the backend
-            // service will query records, and if a matching record is found,
-            // the backend service will use the corresponding WeChat sessionKey
-            // to retrieve WeChat API information on behalf of the user.
+            // proxy representation - there is a one-to-one correspondence
+            // between uclcssaSessionKey <-> sessionKey. Requests made to
+            // WeChat APIs require the client to send along an
+            // uclcssaSessionKey, for which the backend service will try to
+            // find a matching uclcssaSessionKey. Should a matching
+            // uclcssaSessionKey be found, the backend service will use the
+            // corresponding WeChat sessionKey to retrieve WeChat API
+            // information on behalf of the user.
             const payload = openId + sessionKey;
 
             // A 256-bit cryptographically-secure random number is generated
