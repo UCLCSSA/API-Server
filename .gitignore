@@ -37,8 +37,8 @@ lerna-debug.log*
 ssl/public-certificate.crt
 ssl/private-key.key
 
-# Node env file
-.env
+# Node env file(s)
+*.env
 
 # ORM Config
 **/ormconfig.json
