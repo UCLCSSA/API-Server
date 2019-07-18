@@ -3,7 +3,8 @@
         "browser": false,
         "commonjs": false,
         "es6": true,
-        "node": true
+        "node": true,
+        "mocha": true
     },
     "plugins": [],
     "extends": ["eslint:recommended"],
@@ -13,8 +14,7 @@
     },
     "rules": {
         "linebreak-style": ["warn", "unix"],
-        "no-console": "warn",
-        "quotes": ["warn", "double", { "allowTemplateLiterals": true }],
+        "quotes": ["warn", "single", { "allowTemplateLiterals": true }],
         "semi": ["warn", "always"],
         "no-var": "error",
         "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
