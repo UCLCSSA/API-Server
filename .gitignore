@@ -33,12 +33,14 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# Self-signed SSL certificates for development
+# SSL certificate and key
 ssl/public-certificate.crt
 ssl/private-key.key
 
 # Node env file(s)
 *.env
 
-# ORM Config
-**/ormconfig.json
+# Configuration file(s)
+config/development.json
+config/production.json
+config/test.json
