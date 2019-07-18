@@ -133,7 +133,6 @@
             }
         ],
         "rest-spread-spacing": ["warn", "never"],
-        "sort-imports": "warn",
         "operator-linebreak": ["warn", "before"]
     },
     "globals": {
