@@ -48,12 +48,12 @@ const config = convict({
         basePath: {
             doc: 'Base path of log file.',
             format: String,
-            default: `${process.cwd()}/log`,
+            default: `log`,
             env: 'LOG_BASE_PATH',
         },
         interval: {
             doc: 'How long before log file is rotated.',
-            format: 'duration',
+            format: String,
             default: '1d',
             env: 'LOG_INTERVAL',
         },

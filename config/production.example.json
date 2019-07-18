@@ -4,5 +4,12 @@
     "rateLimit": {
         "windowMs": 300000,
         "windowMax": 100
+    },
+    "logging": {
+        "fileName": "access.log",
+        "basePath": "log",
+        "interval": "1d",
+        "fileSize": "10M",
+        "compressionMethod": "gzip"
     }
 }

@@ -1,5 +1,3 @@
-const debug = require('debug')('server:debug');
-
 import express from 'express';
 
 import bodyParser from 'body-parser';
@@ -9,6 +7,8 @@ import rateLimit from 'express-rate-limit';
 import config from './config/config';
 
 import createLogger from './log/logger';
+
+import debugLogger from './debug/debugLogger';
 
 const app = express();
 
@@ -27,10 +27,15 @@ const rateLimiter = rateLimit({
 
 app.use(rateLimiter);
 
+// Debug logging
+if (config.get('env') !== 'production') {
+    app.use(debugLogger);
+}
+
 // Request logging
 const logger = createLogger({
     fileName: config.get('logging.fileName'),
-    basePath: config.get('logging.basePath'),
+    basePath: `${process.cwd()}/${config.get('logging.basePath')}`,
     interval: config.get('logging.interval'),
     fileSize: config.get('logging.fileSize'),
     compressionMethod: config.get('logging.compressionMethod'),
@@ -44,7 +49,6 @@ const port = config.get('port');
 const httpServer = app.listen(port, () => {
     const mode = config.get('name');
     const startupMessage = `Server listening on port ${port} in ${mode} mode`;
-    debug(startupMessage);
     console.log(startupMessage);
 });
 
