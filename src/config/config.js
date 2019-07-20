@@ -70,6 +70,34 @@ const config = convict({
             env: 'LOG_COMPRESSION',
         },
     },
+    database: {
+        doc: 'Database connection settings.',
+        host: {
+            doc: 'Database host.',
+            format: String,
+            default: 'localhost',
+            env: 'DB_HOST',
+        },
+        userName: {
+            doc: 'Database user name.',
+            format: String,
+            default: 'api_user',
+            env: 'DB_USERNAME',
+        },
+        userPassword: {
+            doc: 'Database user password.',
+            format: '*',
+            default: '',
+            sensitive: true,
+            env: 'DB_PASSWORD',
+        },
+        databaseName: {
+            doc: 'Name of database.',
+            format: String,
+            default: 'db',
+            env: 'DB_DATABASE_NAME',
+        },
+    },
 });
 
 // Load environment-specific config file
