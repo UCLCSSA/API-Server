@@ -28,13 +28,13 @@ const config = convict({
             doc: 'Time until request count is reset (milliseconds).',
             format: 'int',
             default: 5 * 60 * 1000,
-            env: 'RATE-LIMIT-WINDOW-MS',
+            env: 'RATE_LIMIT_WINDOW_MS',
         },
         windowMax: {
             doc: 'Max requests per window period.',
             format: 'int',
             default: 100,
-            env: 'RATE-LIMIT-WINDOW-MAX',
+            env: 'RATE_LIMIT_WINDOW_MAX',
         },
     },
     logging: {
@@ -68,6 +68,34 @@ const config = convict({
             format: ['gzip'],
             default: 'gzip',
             env: 'LOG_COMPRESSION',
+        },
+    },
+    database: {
+        doc: 'Database connection settings.',
+        host: {
+            doc: 'Database host.',
+            format: String,
+            default: 'localhost',
+            env: 'DB_HOST',
+        },
+        userName: {
+            doc: 'Database user name.',
+            format: String,
+            default: 'api_user',
+            env: 'DB_USERNAME',
+        },
+        userPassword: {
+            doc: 'Database user password.',
+            format: '*',
+            default: '',
+            sensitive: true,
+            env: 'DB_PASSWORD',
+        },
+        databaseName: {
+            doc: 'Name of database.',
+            format: String,
+            default: 'db',
+            env: 'DB_DATABASE_NAME',
         },
     },
 });
