@@ -21,7 +21,7 @@ describe('createDbConnection', () => {
     });
 
     it('should throw error if invalid database options are given', () => {
-        const dbOptions = {
+        const invalidDbOptions = {
             // empty options are not allowed.
             host: '',
             user: null,
@@ -32,7 +32,7 @@ describe('createDbConnection', () => {
         const fakeDbFactory = { createConnection: sinon.fake() };
 
         expect(() => {
-            createDbConnection(fakeDbFactory)(dbOptions);
+            createDbConnection(fakeDbFactory)(invalidDbOptions);
         }).to.throw();
     });
 });
