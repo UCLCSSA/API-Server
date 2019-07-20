@@ -50,10 +50,11 @@ app.use(logger);
 // Database integration
 const databaseOptions = {
     host: config.get('database.host'),
-    user: config.get('database.userName'),
-    password: config.get('database.userPassword'),
+    userName: config.get('database.userName'),
+    userPassword: config.get('database.userPassword'),
     databaseName: config.get('database.databaseName'),
 };
+
 const connection = createDbConnection(mysql)(databaseOptions);
 // Global database connection (singleton) created on at startup only.
 setConnection(connection);
