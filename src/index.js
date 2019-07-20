@@ -4,11 +4,15 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
+import mysql from 'mysql';
+
 import config from './config/config';
 
 import createLogger from './log/logger';
 
 import debugLogger from './debug/debugLogger';
+
+import { createDbConnection, setConnection } from './db/db-connection';
 
 const app = express();
 
@@ -42,6 +46,17 @@ const logger = createLogger({
 });
 
 app.use(logger);
+
+// Database integration
+const databaseOptions = {
+    host: config.get('database.host'),
+    user: config.get('database.userName'),
+    password: config.get('database.userPassword'),
+    databaseName: config.get('database.databaseName'),
+};
+const connection = createDbConnection(mysql)(databaseOptions);
+// Global database connection (singleton) created on at startup only.
+setConnection(connection);
 
 // The port the server is to listen on. Defaults to 3000.
 const port = config.get('port');

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import createDbConnection from './db-connection';
+import { createDbConnection } from './db-connection';
 
 describe('createDbConnection', () => {
     it('should create database connection with user supplied options', () => {
