@@ -28,13 +28,13 @@ const config = convict({
             doc: 'Time until request count is reset (milliseconds).',
             format: 'int',
             default: 5 * 60 * 1000,
-            env: 'RATE-LIMIT-WINDOW-MS',
+            env: 'RATE_LIMIT_WINDOW_MS',
         },
         windowMax: {
             doc: 'Max requests per window period.',
             format: 'int',
             default: 100,
-            env: 'RATE-LIMIT-WINDOW-MAX',
+            env: 'RATE_LIMIT_WINDOW_MAX',
         },
     },
     logging: {
