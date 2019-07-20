@@ -12,12 +12,27 @@ describe('createDbConnection', () => {
             database: 'hello_world_db',
         };
 
-        const mockMysqlFactory = { createConnection: sinon.fake() };
+        const fakeDbFactory = { createConnection: sinon.fake() };
 
-        createDbConnection(mockMysqlFactory)(dbOptions);
+        createDbConnection(fakeDbFactory)(dbOptions);
 
-        expect(mockMysqlFactory.createConnection.calledOnce).to.equal(true);
-        expect(mockMysqlFactory.createConnection.args[0][0])
-            .to.deep.equal(dbOptions);
+        expect(fakeDbFactory.createConnection.calledOnce).to.equal(true);
+        expect(fakeDbFactory.createConnection.args[0][0]).to.deep.equal(dbOptions);
+    });
+
+    it('should throw error if invalid database options are given', () => {
+        const dbOptions = {
+            // empty options are not allowed.
+            host: '',
+            user: null,
+            password: 'secret',
+            database: 'hello_world_db',
+        };
+
+        const fakeDbFactory = { createConnection: sinon.fake() };
+
+        expect(() => {
+            createDbConnection(fakeDbFactory)(dbOptions);
+        }).to.throw();
     });
 });
