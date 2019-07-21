@@ -1,4 +1,4 @@
-import isNonEmptyString from '../util/is-non-empty-string';
+import { isNonEmptyString } from '../util/is-non-empty-string';
 
 const dbOptionsAreValid = ({ host, userName, userPassword, databaseName }) =>
     isNonEmptyString(host)
@@ -7,18 +7,21 @@ const dbOptionsAreValid = ({ host, userName, userPassword, databaseName }) =>
     && isNonEmptyString(databaseName);
 
 const createDbConnection = dbFactory => dbOptions => {
-    if (!dbFactory || !dbFactory.createConnection)
-        throw Error('Invalid connection factory.');
-    if (!dbOptionsAreValid(dbOptions))
-        throw new Error('Invalid database options.');
+    if (!dbFactory || !dbFactory.createConnection) throw Error('Invalid connection factory.');
+    if (!dbOptionsAreValid(dbOptions)) throw new Error('Invalid database options.');
 
     const { host, userName, userPassword, databaseName } = dbOptions;
-    return dbFactory.createConnection({
+
+    const connection = dbFactory.createConnection({
         host,
         user: userName,
         password: userPassword,
         database: databaseName,
     });
+
+    connection.connect();
+
+    return connection;
 };
 
 let connection = null;

@@ -13,12 +13,17 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "array-bracket-spacing": ["warn", "always"],
         "linebreak-style": ["warn", "unix"],
         "quotes": ["warn", "single", { "allowTemplateLiterals": true }],
         "semi": ["warn", "always"],
         "no-var": "error",
         "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-        "max-len": ["warn", 100, { "ignoreTemplateLiterals": true }],
+        "max-len": ["warn", 100, {
+            "ignoreTemplateLiterals": true,
+            "ignoreStrings": true,
+            "ignoreUrls": true,
+        }],
         "no-duplicate-imports": ["warn", { "includeExports": true }],
         "prefer-rest-params": "warn",
         "prefer-spread": "warn",

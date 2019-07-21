@@ -44,3 +44,6 @@ ssl/private-key.key
 config/development.json
 config/production.json
 config/test.json
+
+# VS Code
+.vscode/

@@ -1,6 +1,6 @@
 {
     "name": "api-server",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "UCLCSSA API Server",
     "main": "src/index.js",
     "repository": "git@github.com:UCLCSSA/API-Server.git",
@@ -18,9 +18,9 @@
         "serve": "NODE_ENV=production node dist/index.js",
         "start": "NODE_ENV=development babel-node src/index.js",
         "dev": "DEBUG=server:debug NODE_ENV=development nodemon src/index.js --exec babel-node",
-        "test": "DEBUG=server:debug NODE_ENV=test mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --reporter spec --exec babel-node --exit src/**/*.spec.js",
-        "test:watch": "DEBUG=server:debug NODE_ENV=development mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --watch --reporter spec --exec babel-node src/**/*.spec.js",
-        "test:integration": "yarn run test && mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --watch --reporter spec --exec babel-node src/**/*.spec.js test/**/*.spec-e2e.js",
+        "test": "DEBUG=server:debug NODE_ENV=test mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --reporter spec --exec babel-node --exit --recursive \"src/**/*.spec.js\"",
+        "test:watch": "DEBUG=server:debug NODE_ENV=development mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --watch --reporter spec --exec babel-node --recursive \"src/**/*.spec.js\"",
+        "test:integration": "yarn run test && mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --watch --reporter spec --exec babel-node --recursive \"src/**/*.spec.js\" \"test/**/*.spec-e2e.js\"",
         "fix:other": "yarn run prettier --write",
         "fix:js": "yarn run lint:js --fix",
         "fix": "yarn run fix:js && npm run fix:other",
@@ -46,15 +46,16 @@
         "nodemon": "^1.19.1",
         "prettier": "^1.18.2",
         "regenerator-runtime": "^0.13.2",
-        "sinon": "^7.3.2"
+        "sinon": "^7.3.2",
+        "supertest": "^4.0.2"
     },
     "dependencies": {
+        "axios": "^0.19.0",
         "body-parser": "^1.19.0",
         "convict": "^5.0.0",
         "cors": "^2.8.5",
         "express": "^4.17.1",
         "express-rate-limit": "^5.0.0",
-        "knex": "^0.19.0",
         "morgan": "^1.9.1",
         "mysql": "^2.17.1",
         "rotating-file-stream": "^1.4.2"
