@@ -7,7 +7,7 @@ import convict from 'convict';
 const config = convict({
     env: {
         doc: 'Application environment.',
-        format: ['production', 'development', 'test'],
+        format: [ 'production', 'development', 'test' ],
         default: 'development',
         env: 'NODE_ENV',
     },
@@ -65,7 +65,7 @@ const config = convict({
         },
         compressionMethod: {
             doc: 'How is the log file compressed.',
-            format: ['gzip'],
+            format: [ 'gzip' ],
             default: 'gzip',
             env: 'LOG_COMPRESSION',
         },

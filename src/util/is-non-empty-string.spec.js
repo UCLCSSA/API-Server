@@ -37,10 +37,10 @@ describe('isNonEmptyStrings', () => {
     });
 
     it('should be false for array containing empty string', () => {
-        expect(isNonEmptyStrings(['a', '', 'b'])).to.equal(false);
+        expect(isNonEmptyStrings([ 'a', '', 'b' ])).to.equal(false);
     });
 
     it('should be true for array containing only non-empty strings', () => {
-        expect(isNonEmptyStrings(['a', 'b', 'c', ' '])).to.equal(true);
+        expect(isNonEmptyStrings([ 'a', 'b', 'c', ' ' ])).to.equal(true);
     });
 });

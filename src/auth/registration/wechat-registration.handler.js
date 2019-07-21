@@ -24,7 +24,8 @@ const createWechatRegistrationHandler = WechatService => async (req, res, next) 
 
     // Try to authenticate via WeChat Auth API
     const authPayload = { appId, appSecret, code };
-    const { uclcssaToken, sessionKey, openId } = await WechatService.authenticate(authPayload);
+    const { uclcssaToken }
+        = await WechatService.authenticate(authPayload);
 
     /*
      * Return uclcssaToken to the client. This token shall be stored and used
