@@ -19,8 +19,6 @@ const createDbConnection = dbFactory => dbOptions => {
         database: databaseName,
     });
 
-    connection.connect();
-
     return connection;
 };
 
