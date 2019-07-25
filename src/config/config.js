@@ -97,6 +97,14 @@ const config = convict({
             default: 'db',
             env: 'DB_DATABASE_NAME',
         },
+        connectionLimit: {
+            doc: 'Maximum simultaneous connection',
+            format: 'int',
+            default: 10,
+            max: 100,
+            min: 1,
+            env: 'DB_CONNECTION_LIMIT',
+        },
     },
 });
 

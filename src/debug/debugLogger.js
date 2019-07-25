@@ -1,4 +1,4 @@
-const debug = require('debug')('server:debug');
+import debug from './debug';
 
 const debugLogger = (req, res, next) => {
     debug('========= <REQ/RES> =========');
