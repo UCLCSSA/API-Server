@@ -16,6 +16,7 @@
         "host": "localhost:3306",
         "userName": "api_user",
         "userPassword": "123456",
-        "databaseName": "uclcssa-test"
+        "databaseName": "uclcssa_test",
+        "connectionLimit": 10
     }
 }
