@@ -10,7 +10,7 @@ import createLogger from './log/logger';
 
 import debugLogger from './debug/debugLogger';
 
-import { createPool, setPool } from './db/db-connection';
+import { createPool, setPool } from './persistence/db-connection';
 
 const app = express();
 
