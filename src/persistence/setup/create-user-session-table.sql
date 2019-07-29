@@ -1,4 +1,4 @@
--- Ensure timezone is UTC+0 for standardization
+-- Ensure timezone is UTC+0 for standardization.
 SET TIME_ZONE = '+00:00';
 
 -- Missing strings default to full-length spaces.
@@ -15,7 +15,10 @@ CREATE TABLE IF NOT EXISTS UserSessions
     -- openId retrieved is not sufficiently long, space characters U+0020
     -- shall be used to pad the openId (i.e. space padding concatenated with
     -- openId).
-    WechatOpenId CHAR(64) NOT NULL DEFAULT (REPEAT(' ', 64)),
+    WechatOpenId CHAR(64) NOT NULL,
     WechatSessionKey CHAR(64) NOT NULL DEFAULT (REPEAT(' ', 64)),
-    UclapiToken CHAR(64) NOT NULL DEFAULT (REPEAT(' ', 64))
+    UclapiToken CHAR(64) NOT NULL DEFAULT (REPEAT(' ', 64)),
+    -- The user's WeChat openId serves as the primary key to ensure each user
+    -- only has one associated valid UclcssaSessionKey.
+    PRIMARY KEY (WechatOpenId)
 );
