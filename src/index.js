@@ -7,10 +7,11 @@ import rateLimit from 'express-rate-limit';
 import config from './config/config';
 
 import createLogger from './log/logger';
-
 import debugLogger from './debug/debugLogger';
 
 import { createPool, setPool } from './persistence/db-connection';
+
+import registrationRouter from 'src/auth/registration/registration.router';
 
 const app = express();
 
@@ -56,6 +57,10 @@ const pool = createPool({
 
 // Set global connection pool. The pool instance can be fetched via getPool.
 setPool(pool);
+
+/// Routes
+
+app.use('/', registrationRouter);
 
 // The port the server is to listen on. Defaults to 3000.
 const port = config.get('port');
