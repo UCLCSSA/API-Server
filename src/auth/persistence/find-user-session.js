@@ -2,23 +2,24 @@ import debug from '../../debug/debug';
 
 import { getPool } from '../../persistence/db-connection';
 
-const findUserSessionQuery = `
-SELECT UclcssaSessionKey, CreationDatetime, WechatOpenId
-    FROM UserSessions
-    WHERE
-        UclcssaSessionKey = ?
-`;
-
 const findUserSession = userSession =>
   new Promise((resolve, reject) => {
     const pool = getPool();
 
-    const handler = (error, results, _fields) => {
+    const findUserSessionQuery = `
+      SELECT UclcssaSessionKey, CreationDatetime, WechatOpenId
+        FROM UserSessions
+        WHERE
+          UclcssaSessionKey = ?
+    `;
+
+    const handler = (error, results) => {
       if (error) {
         debug(error);
         reject(error);
       }
 
+      // Try to find one matching record.
       const [matchingUserSession] = results;
 
       if (!matchingUserSession) {
@@ -26,12 +27,20 @@ const findUserSession = userSession =>
         reject(new Error('No matching user session found.'));
       }
 
+      const {
+        UclcssaSessionKey,
+        WechatOpenId,
+        CreationDateTime
+      } = matchingUserSession;
+
       resolve({
-        uclcssaSessionKey: matchingUserSession.UclcssaSessionKey,
-        creationDatetime: matchingUserSession.CreationDateTime,
-        openId: matchingUserSession.WechatOpenId
+        uclcssaSessionKey: UclcssaSessionKey,
+        creationDateTime: CreationDateTime,
+        openId: WechatOpenId
       });
     };
 
     pool.query(findUserSessionQuery, [userSession], handler);
   });
+
+export default findUserSession;

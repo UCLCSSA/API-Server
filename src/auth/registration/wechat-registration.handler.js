@@ -11,50 +11,60 @@ const handleMissingKey = createBadRequestHandler(
   'Bad request: missing one or more of { appId, appSecret, code }.'
 );
 
-const handleWeChatAuthenticatedFailed = createBadRequestHandler(
+const handleWechatAuthenticatedFailed = createBadRequestHandler(
   'Bad request: failed to authenticated via WeChat.'
 );
 
+const handleGenerateUclcssaSessionKeyFailed = createBadRequestHandler(
+  'Internal server error: failed to generate uclcssaSessionKey.'
+);
+
 const createWechatRegistrationHandler =
-    authenticateViaWeChat =>
+    authenticateViaWechat =>
       generateUclcssaSessionKey =>
-        async (req, res, next) => {
+        async (request, response, next) => {
           // Missing POST body
-          if (!req.body) {
-            handleMissingPostBody(res, next);
+          if (!request.body) {
+            handleMissingPostBody(response, next);
             return;
           }
 
-          const { appId, appSecret, code } = req.body;
+          const { appId, appSecret, code } = request.body;
 
           // Missing any of required keys
           if (!isNonEmptyStrings([appId, appSecret, code])) {
-            handleMissingKey(res, next);
+            handleMissingKey(response, next);
             return;
           }
 
           // Authenticate via WeChat Auth API
           const authPayload = { appId, appSecret, code };
           const { wechatOpenId, wechatSessionKey } =
-        await authenticateViaWeChat(authPayload);
+            await authenticateViaWechat(authPayload);
 
           if (!wechatOpenId || !wechatSessionKey) {
-            handleWeChatAuthenticatedFailed(res, next);
+            handleWechatAuthenticatedFailed(response, next);
             return;
           }
 
-          // Generate a new uclcssaSessionKey based on WeChat openId and sessionKey.
+          // Generate a new uclcssaSessionKey based on WeChat openId and
+          // sessionKey.
           const uclcssaSessionKey = generateUclcssaSessionKey({
             wechatOpenId,
             wechatSessionKey
           });
 
+          if (!uclcssaSessionKey) {
+            handleGenerateUclcssaSessionKeyFailed(response, next);
+            return;
+          }
+
           // Return uclcssaSessionKey to the client. This session key shall
           // be stored and used by the client as proof-of-identity for
           // authorized access to protected routes.
-          res.status(HttpStatusCode.OK);
-          res.type(ContentType.JSON);
-          res.json({ uclcssaSessionKey });
+          response.status(HttpStatusCode.OK);
+          response.type(ContentType.JSON);
+          response.json({ uclcssaSessionKey });
         };
 
 export default createWechatRegistrationHandler;

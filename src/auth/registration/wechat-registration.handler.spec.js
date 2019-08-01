@@ -11,6 +11,9 @@ describe('/register route handler', () => {
   let body;
   let fakeRes;
   let fakeNext;
+  let authenticateViaWechat;
+  let generateUclcssaSessionKey;
+  let handler;
 
   beforeEach(() => {
     body = null;
@@ -20,6 +23,11 @@ describe('/register route handler', () => {
       json: sinon.fake()
     };
     fakeNext = sinon.fake();
+    authenticateViaWechat = sinon.fake();
+    generateUclcssaSessionKey = sinon.fake();
+    handler = createWechatRegistrationHandler(
+      authenticateViaWechat
+    )(generateUclcssaSessionKey);
   });
 
   it('should return 400 bad request for missing POST body', async () => {
@@ -27,9 +35,7 @@ describe('/register route handler', () => {
     // eslint-disable-next-line no-undefined
     body = undefined;
 
-    await createWechatRegistrationHandler(
-      null
-    )({ body }, fakeRes, fakeNext);
+    await handler({ body }, fakeRes, fakeNext);
 
     expect(fakeRes.status.calledWith(HttpStatusCode.BAD_REQUEST))
       .to.equal(true);
@@ -40,11 +46,8 @@ describe('/register route handler', () => {
   it('should return 400 bad request for missing any key', async () => {
     // Missing code
     body = { appId: 'present', appSecret: 'present' };
-    const req = { body };
 
-    await createWechatRegistrationHandler(
-      null
-    )(req, fakeRes, fakeNext);
+    await handler({ body }, fakeRes, fakeNext);
 
     expect(fakeRes.status.calledWith(HttpStatusCode.BAD_REQUEST))
       .to.equal(true);
