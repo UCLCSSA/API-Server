@@ -7,14 +7,14 @@ import rfs from 'rotating-file-stream';
  * 2. Log file exists for longer than logOptions.interval.
  */
 const createRfsLogStream = logOptions =>
-    rfs(logOptions.fileName, {
-        path: logOptions.basePath,
-        interval: logOptions.interval,
-        size: logOptions.fileSize,
-        compress: logOptions.compressionMethod,
-    });
+  rfs(logOptions.fileName, {
+    path: logOptions.basePath,
+    interval: logOptions.interval,
+    size: logOptions.fileSize,
+    compress: logOptions.compressionMethod
+  });
 
 const createLogger = logOptions =>
-    morgan('combined', { stream: createRfsLogStream(logOptions) });
+  morgan('combined', { stream: createRfsLogStream(logOptions) });
 
 export default createLogger;

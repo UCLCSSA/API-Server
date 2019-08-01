@@ -23,35 +23,35 @@ app.use(cors());
 
 // Rate-limiting
 const rateLimiter = rateLimit({
-    windowMs: config.get('rateLimit.windowMs'),
-    max: config.get('rateLimit.windowMax'),
+  windowMs: config.get('rateLimit.windowMs'),
+  max: config.get('rateLimit.windowMax')
 });
 
 app.use(rateLimiter);
 
 // Debug logging
 if (config.get('env') !== 'production') {
-    app.use(debugLogger);
+  app.use(debugLogger);
 }
 
 // Request logging
 const logger = createLogger({
-    fileName: config.get('logging.fileName'),
-    basePath: `${process.cwd()}/${config.get('logging.basePath')}`,
-    interval: config.get('logging.interval'),
-    fileSize: config.get('logging.fileSize'),
-    compressionMethod: config.get('logging.compressionMethod'),
+  fileName: config.get('logging.fileName'),
+  basePath: `${process.cwd()}/${config.get('logging.basePath')}`,
+  interval: config.get('logging.interval'),
+  fileSize: config.get('logging.fileSize'),
+  compressionMethod: config.get('logging.compressionMethod')
 });
 
 app.use(logger);
 
 // Database integration
 const pool = createPool({
-    connectionLimit: config.get('database.connectionLimit'),
-    userName: config.get('database.userName'),
-    password: config.get('database.userPassword'),
-    host: config.get('database.host'),
-    databaseName: config.get('database.databaseName'),
+  connectionLimit: config.get('database.connectionLimit'),
+  userName: config.get('database.userName'),
+  password: config.get('database.userPassword'),
+  host: config.get('database.host'),
+  databaseName: config.get('database.databaseName')
 });
 
 // Set global connection pool. The pool instance can be fetched via getPool.
@@ -61,9 +61,9 @@ setPool(pool);
 const port = config.get('port');
 
 const httpServer = app.listen(port, () => {
-    const mode = config.get('name');
-    const startupMessage = `Server listening on port ${port} in ${mode} mode`;
-    console.log(startupMessage);
+  const mode = config.get('name');
+  const startupMessage = `Server listening on port ${port} in ${mode} mode`;
+  console.log(startupMessage);
 });
 
 module.exports = app;

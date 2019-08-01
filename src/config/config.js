@@ -5,107 +5,107 @@ import convict from 'convict';
  * See https://github.com/mozilla/node-convict for usage.
  */
 const config = convict({
-    env: {
-        doc: 'Application environment.',
-        format: [ 'production', 'development', 'test' ],
-        default: 'development',
-        env: 'NODE_ENV',
+  env: {
+    doc: 'Application environment.',
+    format: ['production', 'development', 'test'],
+    default: 'development',
+    env: 'NODE_ENV'
+  },
+  name: {
+    doc: 'Environment description.',
+    format: String,
+    default: 'development'
+  },
+  port: {
+    doc: 'Port the server is to run on.',
+    format: 'port',
+    default: 3000,
+    env: 'PORT'
+  },
+  rateLimit: {
+    doc: 'Rate limiting settings.',
+    windowMs: {
+      doc: 'Time until request count is reset (milliseconds).',
+      format: 'int',
+      default: 5 * 60 * 1000,
+      env: 'RATE_LIMIT_WINDOW_MS'
     },
-    name: {
-        doc: 'Environment description.',
-        format: String,
-        default: 'development',
+    windowMax: {
+      doc: 'Max requests per window period.',
+      format: 'int',
+      default: 100,
+      env: 'RATE_LIMIT_WINDOW_MAX'
+    }
+  },
+  logging: {
+    doc: 'Log file settings.',
+    fileName: {
+      doc: 'Name of log file.',
+      format: String,
+      default: 'access.log',
+      env: 'LOG_FILE_NAME'
     },
-    port: {
-        doc: 'Port the server is to run on.',
-        format: 'port',
-        default: 3000,
-        env: 'PORT',
+    basePath: {
+      doc: 'Base path of log file.',
+      format: String,
+      default: `log`,
+      env: 'LOG_BASE_PATH'
     },
-    rateLimit: {
-        doc: 'Rate limiting settings.',
-        windowMs: {
-            doc: 'Time until request count is reset (milliseconds).',
-            format: 'int',
-            default: 5 * 60 * 1000,
-            env: 'RATE_LIMIT_WINDOW_MS',
-        },
-        windowMax: {
-            doc: 'Max requests per window period.',
-            format: 'int',
-            default: 100,
-            env: 'RATE_LIMIT_WINDOW_MAX',
-        },
+    interval: {
+      doc: 'How long before log file is rotated.',
+      format: String,
+      default: '1d',
+      env: 'LOG_INTERVAL'
     },
-    logging: {
-        doc: 'Log file settings.',
-        fileName: {
-            doc: 'Name of log file.',
-            format: String,
-            default: 'access.log',
-            env: 'LOG_FILE_NAME',
-        },
-        basePath: {
-            doc: 'Base path of log file.',
-            format: String,
-            default: `log`,
-            env: 'LOG_BASE_PATH',
-        },
-        interval: {
-            doc: 'How long before log file is rotated.',
-            format: String,
-            default: '1d',
-            env: 'LOG_INTERVAL',
-        },
-        fileSize: {
-            doc: 'How large before log file is rotated.',
-            format: String,
-            default: '10M',
-            env: 'LOG_FILE_SIZE',
-        },
-        compressionMethod: {
-            doc: 'How is the log file compressed.',
-            format: [ 'gzip' ],
-            default: 'gzip',
-            env: 'LOG_COMPRESSION',
-        },
+    fileSize: {
+      doc: 'How large before log file is rotated.',
+      format: String,
+      default: '10M',
+      env: 'LOG_FILE_SIZE'
     },
-    database: {
-        doc: 'Database connection settings.',
-        host: {
-            doc: 'Database host.',
-            format: String,
-            default: 'localhost',
-            env: 'DB_HOST',
-        },
-        userName: {
-            doc: 'Database user name.',
-            format: String,
-            default: 'api_user',
-            env: 'DB_USERNAME',
-        },
-        userPassword: {
-            doc: 'Database user password.',
-            format: '*',
-            default: '',
-            sensitive: true,
-            env: 'DB_PASSWORD',
-        },
-        databaseName: {
-            doc: 'Name of database.',
-            format: String,
-            default: 'db',
-            env: 'DB_DATABASE_NAME',
-        },
-        connectionLimit: {
-            doc: 'Maximum simultaneous connection',
-            format: 'int',
-            default: 10,
-            max: 100,
-            min: 1,
-            env: 'DB_CONNECTION_LIMIT',
-        },
+    compressionMethod: {
+      doc: 'How is the log file compressed.',
+      format: ['gzip'],
+      default: 'gzip',
+      env: 'LOG_COMPRESSION'
+    }
+  },
+  database: {
+    doc: 'Database connection settings.',
+    host: {
+      doc: 'Database host.',
+      format: String,
+      default: 'localhost',
+      env: 'DB_HOST'
     },
+    userName: {
+      doc: 'Database user name.',
+      format: String,
+      default: 'api_user',
+      env: 'DB_USERNAME'
+    },
+    userPassword: {
+      doc: 'Database user password.',
+      format: '*',
+      default: '',
+      sensitive: true,
+      env: 'DB_PASSWORD'
+    },
+    databaseName: {
+      doc: 'Name of database.',
+      format: String,
+      default: 'db',
+      env: 'DB_DATABASE_NAME'
+    },
+    connectionLimit: {
+      doc: 'Maximum simultaneous connection',
+      format: 'int',
+      default: 10,
+      max: 100,
+      min: 1,
+      env: 'DB_CONNECTION_LIMIT'
+    }
+  }
 });
 
 // Load environment-specific config file

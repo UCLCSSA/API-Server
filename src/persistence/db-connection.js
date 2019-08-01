@@ -3,22 +3,22 @@ import mysql from 'mysql';
 let pool = null;
 
 const createPool = ({
-    connectionLimit,
-    host,
-    userName,
-    password,
-    databaseName,
+  connectionLimit,
+  host,
+  userName,
+  password,
+  databaseName
 }) => mysql.createPool({
-    connectionLimit,
-    host,
-    user: userName,
-    password,
-    database: databaseName,
+  connectionLimit,
+  host,
+  user: userName,
+  password,
+  database: databaseName
 });
 
 const setPool = poolInstance => {
-    pool = poolInstance;
-    return pool;
+  pool = poolInstance;
+  return pool;
 };
 
 const getPool = () => pool;
