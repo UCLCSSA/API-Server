@@ -21,8 +21,13 @@ const handleGenerateUclcssaSessionKeyFailed = createBadRequestHandler(
 
 const createWechatRegistrationHandler =
     authenticateViaWechat =>
-      generateUclcssaSessionKey =>
-        async (request, response, next) => {
+      generateUclcssaSessionKey => {
+        // Missing dependencies
+        if (!authenticateViaWechat || !generateUclcssaSessionKey) {
+          throw Error('Missing dependencies.');
+        }
+
+        return async (request, response, next) => {
           // Missing POST body
           if (!request.body) {
             handleMissingPostBody(response, next);
@@ -66,5 +71,6 @@ const createWechatRegistrationHandler =
           response.type(ContentType.JSON);
           response.json({ uclcssaSessionKey });
         };
+      };
 
 export default createWechatRegistrationHandler;

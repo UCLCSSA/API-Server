@@ -54,4 +54,23 @@ describe('/register route handler', () => {
     expect(fakeRes.type.calledWith(ContentType.JSON)).to.equal(true);
     expect(fakeNext.calledOnce).to.equal(true);
   });
+
+  it(
+    'should throw error for missing wechat auth handler',
+    () => {
+      expect(
+        () => createWechatRegistrationHandler(
+          null
+        )(generateUclcssaSessionKey)
+      ).to.throw();
+    });
+
+  it('should throw error for missing uclcssaSessionKey generator',
+    () => {
+      expect(
+        () => createWechatRegistrationHandler(
+          authenticateViaWechat
+        )(null)
+      ).to.throw();
+    });
 });
