@@ -32,10 +32,7 @@ describe('/register route handler', () => {
 
   it('should return 400 bad request for missing POST body', async () => {
     // If no POST body is supplied by request, req.body is undefined.
-    // eslint-disable-next-line no-undefined
-    body = undefined;
-
-    await handler({ body }, fakeRes, fakeNext);
+    await handler({ }, fakeRes, fakeNext);
 
     expect(fakeRes.status.calledWith(HttpStatusCode.BAD_REQUEST))
       .to.equal(true);
