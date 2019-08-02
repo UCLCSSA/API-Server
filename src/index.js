@@ -11,7 +11,7 @@ import debugLogger from './debug/debugLogger';
 
 import { createPool, setPool } from './persistence/db-connection';
 
-import registrationRouter from 'src/auth/registration/registration.router';
+import registrationRouter from './auth/registration/registration.router';
 
 const app = express();
 

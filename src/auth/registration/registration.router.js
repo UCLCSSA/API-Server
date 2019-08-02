@@ -1,8 +1,10 @@
 import express from 'express';
 
-import wechatRegistrationHandler from './wechat-registration.handler';
+import createWechatRegistrationHandler from './wechat-registration.handler';
 
 const registrationRouter = express.Router();
+
+const wechatRegistrationHandler = createWechatRegistrationHandler()();
 
 registrationRouter.post('/register/wechat', wechatRegistrationHandler);
 

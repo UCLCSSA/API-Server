@@ -54,7 +54,7 @@ const createWechatRegistrationHandler =
 
           // Generate a new uclcssaSessionKey based on WeChat openId and
           // sessionKey.
-          const uclcssaSessionKey = generateUclcssaSessionKey({
+          const uclcssaSessionKey = await generateUclcssaSessionKey({
             wechatOpenId,
             wechatSessionKey
           });
