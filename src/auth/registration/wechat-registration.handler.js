@@ -1,9 +1,13 @@
 import debug from '../../debug/debug';
 
 import { isNonEmptyStrings } from '../../util/is-non-empty-string';
-import createBadRequestHandler from '../../util/bad-request.handler';
+
 import HttpStatusCode from '../../util/http-status-code';
 import ContentType from '../../util/http-content-type';
+
+import createBadRequestHandler from '../../util/bad-request.handler';
+import createInternalServerErrorHandler
+  from '../../util/internal-server-error.handler';
 
 const handleMissingPostBody = createBadRequestHandler(
   'Bad request: missing { appId, appSecret, code }.'
@@ -17,7 +21,7 @@ const handleWechatAuthenticatedFailed = createBadRequestHandler(
   'Bad request: failed to authenticated via WeChat.'
 );
 
-const handleGenerateUclcssaSessionKeyFailed = createBadRequestHandler(
+const handleGenerateUclcssaSessionKeyFailed = createInternalServerErrorHandler(
   'Internal server error: failed to generate uclcssaSessionKey.'
 );
 
