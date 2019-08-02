@@ -13,7 +13,8 @@ const createPool = ({
   host,
   user: userName,
   password,
-  database: databaseName
+  database: databaseName,
+  timezone: 'UTC'
 });
 
 const setPool = poolInstance => {
