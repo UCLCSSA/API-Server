@@ -33,8 +33,12 @@ const createWechatRegistrationHandler =
     authenticateViaWechat =>
       generateUclcssaSessionKey =>
         saveUserSession => {
-          // Missing dependencies
-          if (!authenticateViaWechat || !generateUclcssaSessionKey) {
+          const missingDependencies = () =>
+            !authenticateViaWechat ||
+            !generateUclcssaSessionKey ||
+            !saveUserSession;
+
+          if (missingDependencies()) {
             throw Error('Missing dependencies.');
           }
 

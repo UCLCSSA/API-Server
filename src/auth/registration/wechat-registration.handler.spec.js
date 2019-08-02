@@ -11,9 +11,10 @@ describe('/register route handler', () => {
   let body;
   let fakeRes;
   let fakeNext;
-  let authenticateViaWechat;
-  let generateUclcssaSessionKey;
+  let auth;
+  let generator;
   let handler;
+  let save;
 
   beforeEach(() => {
     body = null;
@@ -23,11 +24,10 @@ describe('/register route handler', () => {
       json: sinon.fake()
     };
     fakeNext = sinon.fake();
-    authenticateViaWechat = sinon.fake();
-    generateUclcssaSessionKey = sinon.fake();
-    handler = createWechatRegistrationHandler(
-      authenticateViaWechat
-    )(generateUclcssaSessionKey);
+    auth = sinon.fake();
+    generator = sinon.fake();
+    save = sinon.fake();
+    handler = createWechatRegistrationHandler(auth)(generator)(save);
   });
 
   it('should return 400 bad request for missing POST body', async () => {
@@ -56,18 +56,21 @@ describe('/register route handler', () => {
     'should throw error for missing wechat auth handler',
     () => {
       expect(
-        () => createWechatRegistrationHandler(
-          null
-        )(generateUclcssaSessionKey)
+        () => createWechatRegistrationHandler(null)(generator)(save)
       ).to.throw();
     });
 
   it('should throw error for missing uclcssaSessionKey generator',
     () => {
       expect(
-        () => createWechatRegistrationHandler(
-          authenticateViaWechat
-        )(null)
+        () => createWechatRegistrationHandler(auth)(null)(save)
+      ).to.throw();
+    });
+
+  it('should throw error for missing db integration',
+    () => {
+      expect(
+        () => createWechatRegistrationHandler(auth)(generator)(null)
       ).to.throw();
     });
 });
