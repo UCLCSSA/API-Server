@@ -18,7 +18,7 @@
     "serve": "NODE_ENV=production node dist/index.js",
     "start": "NODE_ENV=development babel-node src/index.js",
     "dev": "DEBUG=server:debug NODE_ENV=development nodemon src/index.js --exec babel-node",
-    "test": "DEBUG=server:debug NODE_ENV=test mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --reporter spec --exec babel-node --exit --recursive \"src/**/*.spec.js\"",
+    "test": "NODE_ENV=test mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --reporter spec --exec babel-node --exit --recursive \"src/**/*.spec.js\"",
     "test:watch": "DEBUG=server:debug NODE_ENV=development mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --watch --reporter spec --exec babel-node --recursive \"src/**/*.spec.js\"",
     "test:integration": "yarn run test && mocha --require @babel/register --require core-js/stable --require regenerator-runtime/runtime --watch --reporter spec --exec babel-node --recursive \"src/**/*.spec.js\" \"test/**/*.spec-e2e.js\"",
     "fix:other": "yarn run prettier --write",
