@@ -43,65 +43,68 @@ const createWechatRegistrationHandler =
           }
 
           return async (request, response, next) => {
-            // Missing POST body
-            if (!request.body) {
-              debug('Missing post body', { request, response, next });
-              handleMissingPostBody(response, next);
-              return;
+            try {
+              // Missing POST body
+              if (!request.body) {
+                debug('Missing post body', { request, response, next });
+                handleMissingPostBody(response, next);
+              }
+
+              const { appId, appSecret, code } = request.body;
+
+              // Missing any of required keys
+              if (!isNonEmptyStrings([appId, appSecret, code])) {
+                debug('Missing key', { appId, appSecret, code });
+                handleMissingKey(response, next);
+              }
+
+              // Authenticate via WeChat Auth API
+              const authPayload = { appId, appSecret, wechatCode: code };
+              const { wechatOpenId, wechatSessionKey } =
+                await authenticateViaWechat(authPayload);
+
+              if (!wechatOpenId || !wechatSessionKey) {
+                debug('Failed to authenticate via WeChat API.');
+                handleWechatAuthenticatedFailed(response, next);
+              }
+
+              // Generate a new uclcssaSessionKey based on WeChat openId and
+              // sessionKey.
+              const uclcssaSessionKey = await generateUclcssaSessionKey({
+                wechatOpenId,
+                wechatSessionKey
+              });
+
+              if (!uclcssaSessionKey) {
+                debug('Failed to generate uclcssaSession.');
+                handleGenerateUclcssaSessionKeyFailed(response, next);
+              }
+
+              const saveSuccess = await saveUserSession({
+                uclcssaSessionKey,
+                wechatOpenId,
+                wechatSessionKey,
+                uclapiToken: ''
+              });
+
+              console.log('WORLD');
+
+              if (!saveSuccess) {
+                debug('Failed to save user session.');
+                handleSaveUserSessionFailed(response, next);
+              }
+
+              // Return uclcssaSessionKey to the client. This session key shall
+              // be stored and used by the client as proof-of-identity for
+              // authorized access to protected routes.
+              debug('Saved user session. Returning to client.');
+              response.status(HttpStatusCode.OK);
+              response.type(ContentType.JSON);
+              response.json({ uclcssaSessionKey });
+              next();
+            } catch (error) {
+              next(error);
             }
-
-            const { appId, appSecret, code } = request.body;
-
-            // Missing any of required keys
-            if (!isNonEmptyStrings([appId, appSecret, code])) {
-              debug('Missing key', { appId, appSecret, code });
-              handleMissingKey(response, next);
-              return;
-            }
-
-            // Authenticate via WeChat Auth API
-            const authPayload = { appId, appSecret, code };
-            const { wechatOpenId, wechatSessionKey } =
-              await authenticateViaWechat(authPayload);
-
-            if (!wechatOpenId || !wechatSessionKey) {
-              debug('Failed to authenticate via WeChat API.');
-              handleWechatAuthenticatedFailed(response, next);
-              return;
-            }
-
-            // Generate a new uclcssaSessionKey based on WeChat openId and
-            // sessionKey.
-            const uclcssaSessionKey = await generateUclcssaSessionKey({
-              wechatOpenId,
-              wechatSessionKey
-            });
-
-            if (!uclcssaSessionKey) {
-              debug('Failed to generate uclcssaSession.');
-              handleGenerateUclcssaSessionKeyFailed(response, next);
-              return;
-            }
-
-            const saveSuccess = await saveUserSession({
-              uclcssaSessionKey,
-              wechatOpenId,
-              wechatSessionKey,
-              uclapiToken: ''
-            });
-
-            if (!saveSuccess) {
-              debug('Failed to save user session.');
-              handleSaveUserSessionFailed(response, next);
-              return;
-            }
-
-            // Return uclcssaSessionKey to the client. This session key shall
-            // be stored and used by the client as proof-of-identity for
-            // authorized access to protected routes.
-            response.status(HttpStatusCode.OK);
-            response.type(ContentType.JSON);
-            response.json({ uclcssaSessionKey });
           };
         };
 

@@ -20,32 +20,35 @@ const findUserSession = wechatOpenId =>
 
     const handler = (error, results) => {
       if (error) {
+        debug('ERROR!');
         debug(error);
         reject(error);
       }
 
-      // Try to find one matching record.
-      const [matchingUserSession] = results;
+      resolve(() => {
+        // Try to find one matching record.
+        const [matchingUserSession] = results;
 
-      if (!matchingUserSession) {
-        debug('No matching user session found.');
-        resolve(null);
-      }
+        if (!matchingUserSession) {
+          debug('No matching user session found.');
+          return null;
+        }
 
-      const {
-        UclcssaSessionKey,
-        WechatOpenId,
-        WechatSessionKey,
-        UclapiToken,
-        CreationDatetime
-      } = matchingUserSession;
+        const {
+          UclcssaSessionKey,
+          WechatOpenId,
+          WechatSessionKey,
+          UclapiToken,
+          CreationDatetime
+        } = matchingUserSession;
 
-      resolve({
-        uclcssaSessionKey: UclcssaSessionKey,
-        creationDatetime: CreationDatetime,
-        wechatOpenId: WechatOpenId,
-        wechatSessionKey: WechatSessionKey,
-        uclapiToken: UclapiToken
+        return {
+          uclcssaSessionKey: UclcssaSessionKey,
+          creationDatetime: CreationDatetime,
+          wechatOpenId: WechatOpenId,
+          wechatSessionKey: WechatSessionKey,
+          uclapiToken: UclapiToken
+        };
       });
     };
 

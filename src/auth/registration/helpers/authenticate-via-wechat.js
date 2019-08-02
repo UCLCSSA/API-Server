@@ -7,10 +7,12 @@ import { isNonEmptyStrings } from '../../../util/is-non-empty-string';
 const authenticateViaWechat = axios =>
   async ({ appId, appSecret, wechatCode }) => {
     if (!appId || !appSecret || !wechatCode) {
+      debug('Missing appId, appSecret or wechatCode.');
       return { };
     }
 
     if (!isNonEmptyStrings([appId, appSecret, wechatCode])) {
+      debug('One or more of appId, appSecret or wechatCode is empty.');
       return { };
     }
 
@@ -28,21 +30,35 @@ const authenticateViaWechat = axios =>
       const { data, status } = response;
 
       if (status !== 200) {
-        return {};
+        debug(status);
+        return { };
       }
 
-      const wechatOpenId = data.openid;
-      const wechatSessionKey = data.session_key;
-      const errorCode = data.errcode;
-
-      if (errorCode !== 0) {
-        return {};
+      if (data.errcode) {
+        const errorCode = data.errcode;
+        const errorMessage = data.errmsg;
+        debug(errorCode);
+        debug(errorMessage);
+        return { };
       }
 
-      return { wechatOpenId, wechatSessionKey };
+      return { wechatOpenId: data.openid, wechatSessionKey: data.session_key };
     } catch (error) {
-      debug(error);
-      return { };
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        debug(error.response.data);
+        debug(error.response.status);
+        debug(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        debug(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        debug('Error', error.message);
+      }
     }
   };
 

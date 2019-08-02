@@ -30,6 +30,7 @@ const updateUserSession =
       }
 
       debug(`User session updated: ${result.affectedRows} affected rows`);
+      resolve();
     };
 
     pool.query(updateUserSessionQuery, [

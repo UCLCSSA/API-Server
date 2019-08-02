@@ -29,6 +29,7 @@ const insertUserSession =
       }
 
       debug(`New user session inserted: ${result.affectedRows} affected rows`);
+      resolve();
     };
 
     pool.query(insertUserSessionQuery, [

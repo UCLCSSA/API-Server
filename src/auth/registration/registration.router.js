@@ -1,4 +1,5 @@
 import express from 'express';
+import axios from 'axios';
 
 import createWechatRegistrationHandler from './wechat-registration.handler';
 
@@ -9,7 +10,7 @@ import save from './helpers/save-user-session';
 const registrationRouter = express.Router();
 
 const wechatRegistrationHandler =
-  createWechatRegistrationHandler(auth)(generator)(save);
+  createWechatRegistrationHandler(auth(axios))(generator)(save);
 
 registrationRouter.post('/register/wechat', wechatRegistrationHandler);
 
