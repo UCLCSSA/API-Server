@@ -18,7 +18,7 @@ const handleMissingKey = createBadRequestHandler(
 );
 
 const handleWechatAuthenticatedFailed = createBadRequestHandler(
-  'Bad request: failed to authenticated via WeChat.'
+  'Bad request: failed to authenticate via WeChat.'
 );
 
 const handleGenerateUclcssaSessionKeyFailed = createInternalServerErrorHandler(
