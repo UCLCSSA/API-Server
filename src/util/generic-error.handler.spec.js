@@ -1,16 +1,18 @@
+import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
 import HttpStatusCode from './http-status-code';
 import ContentType from './http-content-type';
 
-import createBadRequestHandler from './bad-request.handler';
+import createErrorHandler from './generic-error.handler';
 
 describe('Bad request handler', () => {
   let fakeRes;
   let fakeNext;
   let badRequestHandler;
   const errorMessage = 'BAD REQUEST';
+  const httpStatusCode = HttpStatusCode.INTERNAL_SERVER_ERROR;
 
   beforeEach(() => {
     fakeRes = {
@@ -19,12 +21,12 @@ describe('Bad request handler', () => {
       json: sinon.fake()
     };
     fakeNext = sinon.fake();
-    badRequestHandler = createBadRequestHandler(errorMessage);
+    badRequestHandler = createErrorHandler(httpStatusCode)(errorMessage);
   });
 
-  it('should return 400 Bad Request status code', () => {
+  it('should return matching HTTP status code', () => {
     badRequestHandler(fakeRes, fakeNext);
-    expect(fakeRes.status.calledWith(HttpStatusCode.BAD_REQUEST)).to.equal(true);
+    expect(fakeRes.status.calledWith(httpStatusCode)).to.equal(true);
   });
 
   it('should return application/json Content-Type header', () => {
