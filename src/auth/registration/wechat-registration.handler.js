@@ -5,8 +5,6 @@ import { isNonEmptyStrings } from '../../util/is-non-empty-string';
 import HttpStatusCode from '../../util/http-status-code';
 import ContentType from '../../util/http-content-type';
 
-import currentDateTime from '../../util/current-datetime-mysql';
-
 import createBadRequestHandler from '../../util/bad-request.handler';
 import createInternalServerErrorHandler
   from '../../util/internal-server-error.handler';
@@ -81,12 +79,10 @@ const createWechatRegistrationHandler =
               return;
             }
 
-            // TODO: persist uclcssaSessionKey
             const saveSuccess = await saveUserSession({
               uclcssaSessionKey,
               wechatOpenId,
               wechatSessionKey,
-              creationDateTime: currentDateTime(),
               uclapiToken: ''
             });
 
