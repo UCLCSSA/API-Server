@@ -1,21 +1,22 @@
 {
-    "name": "production",
-    "port": 3000,
-    "rateLimit": {
-        "windowMs": 300000,
-        "windowMax": 100
-    },
-    "logging": {
-        "fileName": "access.log",
-        "basePath": "log",
-        "interval": "1d",
-        "fileSize": "10M",
-        "compressionMethod": "gzip"
-    },
-    "database": {
-        "host": "localhost:3306",
-        "userName": "api_user",
-        "userPassword": "123456",
-        "databaseName": "uclcssa-production"
-    }
+  "name": "production",
+  "port": 3000,
+  "rateLimit": {
+    "windowMs": 300000,
+    "windowMax": 100
+  },
+  "logging": {
+    "fileName": "access.log",
+    "basePath": "log",
+    "interval": "1d",
+    "fileSize": "10M",
+    "compressionMethod": "gzip"
+  },
+  "database": {
+    "host": "localhost:3306",
+    "userName": "api_user",
+    "userPassword": "123456",
+    "databaseName": "uclcssa_production",
+    "connectionLimit": 10
+  }
 }
