@@ -29,15 +29,15 @@ const authenticateViaWechat = axios =>
         return {};
       }
 
-      const openId = data.openid;
-      const sessionKey = data.session_key;
+      const wechatOpenId = data.openid;
+      const wechatSessionKey = data.session_key;
       const errorCode = data.errcode;
 
       if (errorCode !== 0) {
         return {};
       }
 
-      return { openId, sessionKey };
+      return { wechatOpenId, wechatSessionKey };
     } catch (error) {
       debug(error);
       return {};
