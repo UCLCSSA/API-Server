@@ -27,18 +27,20 @@ describe('authenticateViaWechat', () => {
     wechatCode = 'ghi';
   });
 
-  it('should throw error if missing auth details', () => {
-    expect(authenticateViaWechat(axios)({ })).to.eventually.be.rejectedWith(Error);
+  it('should return empty object if missing auth details', async () => {
+    const response = await authenticateViaWechat(axios)({ });
+    expect(response).to.deep.equal({ });
   });
 
-  it('should throw error if auth details are empty strings',
-    () => {
+  it('should return empty object if auth details are empty strings',
+    async () => {
       appId = '';
       appSecret = '';
       wechatCode = '';
-      expect(authenticateViaWechat(axios)({
+      const response = await authenticateViaWechat(axios)({
         appId, appSecret, wechatCode
-      })).to.eventually.be.rejectedWith(Error);
+      });
+      expect(response).to.deep.equal({ });
     });
 
   it('should make request to correct wechat auth api url', async () => {

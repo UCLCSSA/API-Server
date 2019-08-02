@@ -2,14 +2,16 @@ import debug from '../../../debug/debug';
 
 import { isNonEmptyStrings } from '../../../util/is-non-empty-string';
 
+// Error handling here relies on returning { } instead of throwing errors.
+
 const authenticateViaWechat = axios =>
   async ({ appId, appSecret, wechatCode }) => {
     if (!appId || !appSecret || !wechatCode) {
-      throw Error('Missing wechat auth details.');
+      return { };
     }
 
     if (!isNonEmptyStrings([appId, appSecret, wechatCode])) {
-      throw Error('Wechat auth details may not be empty strings.');
+      return { };
     }
 
     try {
@@ -40,7 +42,7 @@ const authenticateViaWechat = axios =>
       return { wechatOpenId, wechatSessionKey };
     } catch (error) {
       debug(error);
-      return {};
+      return { };
     }
   };
 
