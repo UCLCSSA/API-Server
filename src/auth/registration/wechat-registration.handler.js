@@ -1,3 +1,5 @@
+import debug from '../../debug/debug';
+
 import { isNonEmptyStrings } from '../../util/is-non-empty-string';
 import createBadRequestHandler from '../../util/bad-request.handler';
 import HttpStatusCode from '../../util/http-status-code';
@@ -30,6 +32,7 @@ const createWechatRegistrationHandler =
         return async (request, response, next) => {
           // Missing POST body
           if (!request.body) {
+            debug('Missing post body', { request, response, next });
             handleMissingPostBody(response, next);
             return;
           }
@@ -38,6 +41,7 @@ const createWechatRegistrationHandler =
 
           // Missing any of required keys
           if (!isNonEmptyStrings([appId, appSecret, code])) {
+            debug('Missing key', { appId, appSecret, code });
             handleMissingKey(response, next);
             return;
           }
@@ -48,6 +52,7 @@ const createWechatRegistrationHandler =
             await authenticateViaWechat(authPayload);
 
           if (!wechatOpenId || !wechatSessionKey) {
+            debug('Failed to authenticate via WeChat API.');
             handleWechatAuthenticatedFailed(response, next);
             return;
           }
@@ -60,9 +65,12 @@ const createWechatRegistrationHandler =
           });
 
           if (!uclcssaSessionKey) {
+            debug('Failed to generate uclcssaSession.');
             handleGenerateUclcssaSessionKeyFailed(response, next);
             return;
           }
+
+          // TODO: persist uclcssaSessionKey
 
           // Return uclcssaSessionKey to the client. This session key shall
           // be stored and used by the client as proof-of-identity for
