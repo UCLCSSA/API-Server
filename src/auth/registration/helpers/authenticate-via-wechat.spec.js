@@ -119,8 +119,8 @@ describe('authenticateViaWechat', () => {
     });
 
     expect(response).to.deep.equal({
-      openId: '123456',
-      sessionKey: 'abcdef'
+      wechatOpenId: '123456',
+      wechatSessionKey: 'abcdef'
     });
   });
 });
