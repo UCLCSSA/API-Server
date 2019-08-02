@@ -2,15 +2,14 @@ import express from 'express';
 
 import createWechatRegistrationHandler from './wechat-registration.handler';
 
-import authenticateViaWechat from './helpers/authenticate-via-wechat';
-import generateUclcssaSessionKey from './helpers/generate-uclcssa-session-key';
+import auth from './helpers/authenticate-via-wechat';
+import generator from './helpers/generate-uclcssa-session-key';
+import save from './helpers/save-user-session';
 
 const registrationRouter = express.Router();
 
 const wechatRegistrationHandler =
-  createWechatRegistrationHandler(
-    authenticateViaWechat
-  )(generateUclcssaSessionKey);
+  createWechatRegistrationHandler(auth)(generator)(save);
 
 registrationRouter.post('/register/wechat', wechatRegistrationHandler);
 
