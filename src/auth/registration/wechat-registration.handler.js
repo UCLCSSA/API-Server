@@ -87,8 +87,6 @@ const createWechatRegistrationHandler =
                 uclapiToken: ''
               });
 
-              console.log('WORLD');
-
               if (!saveSuccess) {
                 debug('Failed to save user session.');
                 handleSaveUserSessionFailed(response, next);
