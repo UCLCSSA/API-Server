@@ -52,8 +52,7 @@ describe('/register route handler', () => {
     expect(fakeNext.calledOnce).to.equal(true);
   });
 
-  it(
-    'should throw error for missing wechat auth handler',
+  it('should throw error for missing wechat auth handler',
     () => {
       expect(
         () => createWechatRegistrationHandler(null)(generator)(save)

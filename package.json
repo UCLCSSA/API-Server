@@ -1,6 +1,6 @@
 {
-  "name": "api-server",
-  "version": "0.1.0",
+  "name": "API-Server",
+  "version": "1.0.0",
   "description": "UCLCSSA API Server",
   "main": "src/index.js",
   "repository": "git@github.com:UCLCSSA/API-Server.git",
@@ -75,7 +75,8 @@
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "mysql": "^2.17.1",
-    "rotating-file-stream": "^1.4.3"
+    "rotating-file-stream": "^1.4.3",
+    "semver": "^6.3.0"
   },
   "engines": {
     "node": ">=11"

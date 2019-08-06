@@ -11,6 +11,9 @@ import debugLogger from './debug/debugLogger';
 
 import { createPool, setPool } from './persistence/db-connection';
 
+import createVersioningDispatcher from './versioning/versioning.dispatcher';
+import version from './versioning/version';
+
 import registrationRouter from './auth/registration/registration.router';
 
 const app = express();
@@ -30,6 +33,26 @@ const rateLimiter = rateLimit({
 
 app.use(rateLimiter);
 
+// Database integration
+const pool = createPool({
+  connectionLimit: config.get('database.connectionLimit'),
+  userName: config.get('database.userName'),
+  password: config.get('database.userPassword'),
+  host: config.get('database.host'),
+  databaseName: config.get('database.databaseName')
+});
+
+// Set global connection pool. The pool instance can be fetched via getPool.
+setPool(pool);
+
+// API versioning
+const validMajorVersions = [1];
+const defaultMajorVersion = version.MAJOR;
+const versioningDispatcher =
+  createVersioningDispatcher(validMajorVersions)(defaultMajorVersion);
+
+app.use(versioningDispatcher);
+
 // Debug logging
 if (config.get('env') !== 'production') {
   app.use(debugLogger);
@@ -46,21 +69,9 @@ const logger = createLogger({
 
 app.use(logger);
 
-// Database integration
-const pool = createPool({
-  connectionLimit: config.get('database.connectionLimit'),
-  userName: config.get('database.userName'),
-  password: config.get('database.userPassword'),
-  host: config.get('database.host'),
-  databaseName: config.get('database.databaseName')
-});
-
-// Set global connection pool. The pool instance can be fetched via getPool.
-setPool(pool);
-
 /// Routes
 
-app.use('/', registrationRouter);
+app.use('/v1', registrationRouter);
 
 // The port the server is to listen on. Defaults to 3000.
 const port = config.get('port');
