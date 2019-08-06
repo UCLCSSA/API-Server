@@ -48,6 +48,7 @@ const createWechatRegistrationHandler =
               if (!request.body) {
                 debug('Missing post body', { request, response, next });
                 handleMissingPostBody(response, next);
+                return;
               }
 
               const { appId, appSecret, code } = request.body;
@@ -56,6 +57,7 @@ const createWechatRegistrationHandler =
               if (!isNonEmptyStrings([appId, appSecret, code])) {
                 debug('Missing key', { appId, appSecret, code });
                 handleMissingKey(response, next);
+                return;
               }
 
               // Authenticate via WeChat Auth API
@@ -66,6 +68,7 @@ const createWechatRegistrationHandler =
               if (!wechatOpenId || !wechatSessionKey) {
                 debug('Failed to authenticate via WeChat API.');
                 handleWechatAuthenticatedFailed(response, next);
+                return;
               }
 
               // Generate a new uclcssaSessionKey based on WeChat openId and
@@ -78,6 +81,7 @@ const createWechatRegistrationHandler =
               if (!uclcssaSessionKey) {
                 debug('Failed to generate uclcssaSession.');
                 handleGenerateUclcssaSessionKeyFailed(response, next);
+                return;
               }
 
               const saveSuccess = await saveUserSession({
@@ -90,6 +94,7 @@ const createWechatRegistrationHandler =
               if (!saveSuccess) {
                 debug('Failed to save user session.');
                 handleSaveUserSessionFailed(response, next);
+                return;
               }
 
               // Return uclcssaSessionKey to the client. This session key shall
