@@ -2,7 +2,7 @@ import debug from '../../../debug/debug';
 
 import { getPool } from '../../../persistence/db-connection';
 
-const findUserSession = wechatOpenId =>
+const findUserSessionByOpenId = wechatOpenId =>
   new Promise((resolve, reject) => {
     const pool = getPool();
 
@@ -55,4 +55,4 @@ const findUserSession = wechatOpenId =>
     pool.query(findUserSessionQuery, [wechatOpenId], handler);
   });
 
-export default findUserSession;
+export default findUserSessionByOpenId;

@@ -1,6 +1,6 @@
 import currentDatetime from '../../../util/current-datetime-mysql';
 
-import findUserSession from './find-user-session';
+import findUserSessionByOpenId from './find-user-session-by-open-id';
 import updateUserSession from './update-user-session';
 import insertUserSession from './insert-user-session';
 
@@ -12,7 +12,7 @@ const saveUserSession =
     uclapiToken
   }) => {
     try {
-      const existingUserSession = await findUserSession(wechatOpenId);
+      const existingUserSession = await findUserSessionByOpenId(wechatOpenId);
 
       const creationDatetime = currentDatetime();
 
