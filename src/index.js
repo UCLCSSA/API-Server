@@ -15,6 +15,7 @@ import createVersioningDispatcher from './versioning/versioning.dispatcher';
 import version from './versioning/version';
 
 import registrationRouter from './auth/registration/registration.router';
+import logoutRouter from './auth/logout/logout.router';
 
 const app = express();
 
@@ -71,7 +72,9 @@ app.use(logger);
 
 /// Routes
 
+// Authentication and authorization
 app.use('/v1', registrationRouter);
+app.use('/v1', logoutRouter);
 
 // The port the server is to listen on. Defaults to 3000.
 const port = config.get('port');
