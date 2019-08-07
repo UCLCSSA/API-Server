@@ -6,27 +6,26 @@ import HttpStatusCode from '../../util/http-status-code';
 import ContentType from '../../util/http-content-type';
 
 import createBadRequestHandler from '../../util/bad-request.handler';
+import createAccessForbiddenHandler from '../../util/access-forbidden.handler';
 import createInternalServerErrorHandler
   from '../../util/internal-server-error.handler';
 
-const handleMissingPostBody = createBadRequestHandler(
-  'Bad request: missing { appId, appSecret, code }.'
-);
+import ErrorType from '../../util/error-type';
 
 const handleMissingKey = createBadRequestHandler(
-  'Bad request: missing one or more of { appId, appSecret, code }.'
+  ErrorType.BAD_REQUEST.MISSING_REQUIRED_KEYS
 );
 
-const handleWechatAuthenticatedFailed = createBadRequestHandler(
-  'Bad request: failed to authenticate via WeChat.'
+const handleWechatAuthenticatedFailed = createAccessForbiddenHandler(
+  ErrorType.FORBIDDEN.FAILED_WECHAT_AUTHENTICATION
 );
 
 const handleGenerateUclcssaSessionKeyFailed = createInternalServerErrorHandler(
-  'Internal server error: failed to generate uclcssaSessionKey.'
+  ErrorType.INTERNAL_SERVER_ERROR.FAILED_UCLCSSA_SESSION_KEY_GENERATION
 );
 
 const handleSaveUserSessionFailed = createInternalServerErrorHandler(
-  'Internal server error: failed to persist user session.'
+  ErrorType.INTERNAL_SERVER_ERROR.FAILED_SAVE_USER_SESSION
 );
 
 const createWechatRegistrationHandler =
@@ -47,7 +46,7 @@ const createWechatRegistrationHandler =
               // Missing POST body
               if (!request.body) {
                 debug('Missing post body', { request, response, next });
-                handleMissingPostBody(response, next);
+                handleMissingKey(response, next);
                 return;
               }
 

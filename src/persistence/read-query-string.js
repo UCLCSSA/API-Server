@@ -8,8 +8,7 @@ import debug from '../debug/debug';
  */
 const readQueryString = path => {
   try {
-    const queryString = fs.readFileSync(path, { encoding: 'utf8' });
-    return queryString;
+    return fs.readFileSync(path, { encoding: 'utf8' });
   } catch (error) {
     debug(error);
     throw new Error(`Specified query file at ${path} not found.`);

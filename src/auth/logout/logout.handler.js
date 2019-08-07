@@ -1,12 +1,14 @@
 import createBadRequestHandler from '../../util/bad-request.handler';
 import createAccessForbiddenHandler from '../../util/access-forbidden.handler';
 
+import ErrorType from '../../util/error-type';
+
 const handleMissingAuthorizationHeader = createBadRequestHandler(
-  'Bad request: missing Authorization header token.'
+  ErrorType.BAD_REQUEST.MISSING_AUTHORIZATION_HEADER
 );
 
 const handleInvalidSessionKey = createAccessForbiddenHandler(
-  'Access forbidden: invalid uclcssaSessionKey.'
+  ErrorType.FORBIDDEN.INVALID_UCLCSSA_SESSION_KEY
 );
 
 const createLogoutHandler =
