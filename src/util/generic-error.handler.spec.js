@@ -11,7 +11,7 @@ describe('Bad request handler', () => {
   let fakeRes;
   let fakeNext;
   let badRequestHandler;
-  const errorMessage = 'BAD REQUEST';
+  const errorType = '@http-status/detailed-error-type';
   const httpStatusCode = HttpStatusCode.INTERNAL_SERVER_ERROR;
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('Bad request handler', () => {
       json: sinon.fake()
     };
     fakeNext = sinon.fake();
-    badRequestHandler = createErrorHandler(httpStatusCode)(errorMessage);
+    badRequestHandler = createErrorHandler(httpStatusCode)(errorType);
   });
 
   it('should return matching HTTP status code', () => {
@@ -36,8 +36,7 @@ describe('Bad request handler', () => {
 
   it('should return specified error message', () => {
     badRequestHandler(fakeRes, fakeNext);
-    expect(fakeRes.json.args[0][0])
-      .to.deep.equal({ message: errorMessage });
+    expect(fakeRes.json.args[0][0]).to.deep.equal({ error: errorType });
   });
 
   it('should delegate error handling to next handler (Express)', () => {
