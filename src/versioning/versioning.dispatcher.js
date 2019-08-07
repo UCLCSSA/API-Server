@@ -1,7 +1,9 @@
 import createBadRequestHandler from '../util/bad-request.handler';
 
+import ErrorType from '../util/error-type';
+
 const handleInvalidVersion = createBadRequestHandler(
-  'Bad request: invalid API version specified.'
+  ErrorType.BAD_REQUEST.INVALID_API_VERSION
 );
 
 const rewritePath = (request, version, next) => {
