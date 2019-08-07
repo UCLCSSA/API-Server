@@ -7,7 +7,7 @@ import ContentType from '../../util/http-content-type';
 
 import createWechatRegistrationHandler from './wechat-registration.handler';
 
-describe('/register route handler', () => {
+describe('/register/wechat route handler', () => {
   let body;
   let fakeRes;
   let fakeNext;
