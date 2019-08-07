@@ -2,7 +2,8 @@ const ErrorType = {
   BAD_REQUEST: {
     MISSING_REQUIRED_KEYS: '@bad-request/missing-required-keys',
     MISSING_AUTHORIZATION_HEADER: '@bad-request/missing-authorization-header',
-    INVALID_API_VERSION: '@bad-request/invalid-api-version'
+    INVALID_API_VERSION: '@bad-request/invalid-api-version',
+    INVALID_EMAIL: '@bad-request/invalid-email'
   },
   FORBIDDEN: {
     FAILED_WECHAT_AUTHENTICATION: '@forbidden/failed-wechat-authentication',
