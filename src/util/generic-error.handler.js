@@ -2,11 +2,11 @@ import ContentType from './http-content-type';
 
 const createErrorHandler =
   httpStatusCode =>
-    errorMessage =>
+    errorType =>
       (response, next) => {
         response.status(httpStatusCode);
         response.type(ContentType.JSON);
-        response.json({ error: errorMessage });
+        response.json({ error: errorType });
         next(response);
       };
 
