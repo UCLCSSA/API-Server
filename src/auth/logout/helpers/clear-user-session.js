@@ -10,7 +10,8 @@ const clearUserSession = uclcssaSessionKey =>
       UPDATE UserSessions
       SET
         WechatSessionKey = '',
-        UclapiToken = ''
+        UclapiToken = '',
+        UclcssaSessionKey = ''
       WHERE
         UclcssaSessionKey = ?;
     `;
