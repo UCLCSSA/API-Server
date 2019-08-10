@@ -105,6 +105,13 @@ const config = convict({
       min: 1,
       env: 'DB_CONNECTION_LIMIT'
     }
+  },
+  uclcssaSessionKeyExpirationTimeS: {
+    doc: 'Expiration time for an uclcssaSessionKey (seconds).',
+    format: 'int',
+    default: 2592000,
+    min: 1,
+    env: 'UCLCSSA_SESSION_KEY_EXPIRATION_TIME_S'
   }
 });
 
