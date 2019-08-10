@@ -2,7 +2,6 @@ import express from 'express';
 
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import rateLimit from 'express-rate-limit';
 
 import config from './config/config';
 
@@ -25,14 +24,6 @@ app.use(bodyParser.json());
 
 // Cross-origin resource sharing
 app.use(cors());
-
-// Rate-limiting
-const rateLimiter = rateLimit({
-  windowMs: config.get('rateLimit.windowMs'),
-  max: config.get('rateLimit.windowMax')
-});
-
-app.use(rateLimiter);
 
 // Database integration
 const pool = createPool({

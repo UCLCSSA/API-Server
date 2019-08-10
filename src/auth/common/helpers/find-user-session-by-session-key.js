@@ -2,8 +2,16 @@ import debug from '../../../debug/debug';
 
 import { getPool } from '../../../persistence/db-connection';
 
-const findUserSessionByOpenId = wechatOpenId =>
-  new Promise((resolve, reject) => {
+import { isNonEmptyString } from '../../../util/is-non-empty-string';
+
+const findUserSessionBySessionKey = uclcssaSessionKey => {
+  // Ensure uclcssaSessionKey is NOT empty string as the default value for
+  // uclcssaSessionKey is empty string in the database.
+  if (!isNonEmptyString(uclcssaSessionKey)) {
+    return Promise.resolve(null);
+  }
+
+  return new Promise((resolve, reject) => {
     const pool = getPool();
 
     const findUserSessionQuery = `
@@ -16,7 +24,7 @@ const findUserSessionByOpenId = wechatOpenId =>
         LastUsed
       FROM UserSessions
       WHERE
-        WechatOpenId = ?;
+          UclcssaSessionKey = ?;
     `;
 
     const handler = (error, results) => {
@@ -55,7 +63,8 @@ const findUserSessionByOpenId = wechatOpenId =>
       });
     };
 
-    pool.query(findUserSessionQuery, [wechatOpenId], handler);
+    pool.query(findUserSessionQuery, [uclcssaSessionKey], handler);
   });
+};
 
-export default findUserSessionByOpenId;
+export default findUserSessionBySessionKey;

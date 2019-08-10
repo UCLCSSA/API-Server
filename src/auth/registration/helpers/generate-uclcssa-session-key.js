@@ -1,11 +1,13 @@
 import crypto from 'crypto';
 import util from 'util';
+import { isNonEmptyStrings } from '../../../util/is-non-empty-string';
 
 const randomBytes = util.promisify(crypto.randomBytes);
 
 const generateUclcssaSessionKey =
   async ({ wechatOpenId, wechatSessionKey }) => {
     if (!wechatOpenId || !wechatSessionKey) return null;
+    if (!isNonEmptyStrings([wechatOpenId, wechatSessionKey])) return null;
 
     try {
       // We generate 256 bits (32 bytes) to be used as the key for SHA-256 HMAC

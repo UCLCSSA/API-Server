@@ -1,10 +1,6 @@
 {
   "name": "production",
   "port": 3000,
-  "rateLimit": {
-    "windowMs": 300000,
-    "windowMax": 100
-  },
   "logging": {
     "fileName": "access.log",
     "basePath": "log",
@@ -18,5 +14,6 @@
     "userPassword": "123456",
     "databaseName": "uclcssa_production",
     "connectionLimit": 10
-  }
+  },
+  "uclcssaSessionKeyExpirationTimeS": 2592000
 }
