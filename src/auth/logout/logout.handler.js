@@ -1,81 +1,36 @@
-import moment from 'moment';
-
-import ErrorType from '../../util/error-type';
 import ContentType from '../../util/http-content-type';
+import debug from '../../debug/debug';
 
-import createAccessForbiddenHandler from '../../util/access-forbidden.handler';
-import createUnauthorizedHandler from '../../util/unauthorized.handler';
-
-import isSessionExpired from '../common/is-session-expired';
-
-const handleMissingAuthorizationHeader = createAccessForbiddenHandler(
-  ErrorType.FORBIDDEN.MISSING_AUTHORIZATION_HEADER
-);
-
-const handleInvalidSessionKey = createUnauthorizedHandler(
-  ErrorType.UNAUTHORIZED.INVALID_UCLCSSA_SESSION_KEY
-);
-
-const handleExpiredSessionKey = createUnauthorizedHandler(
-  ErrorType.UNAUTHORIZED.EXPIRED_UCLCSSA_SESSION_KEY
-);
-
+// Depends on registration tier checking middleware.
 const createLogoutHandler =
-  findUserSessionBySessionKey =>
-    clearUserSession =>
-      (expirationTimeS = 2592000) => {
-        const missingDependencies =
-          () => !findUserSessionBySessionKey || !clearUserSession;
+    clearUserSession => {
+      if (!clearUserSession) {
+        throw Error('Missing clearUserSession dependency.');
+      }
 
-        if (missingDependencies()) {
-          throw Error('Missing dependencies.');
-        }
+      return async (request, response, next) => {
+        try {
+          const { uclcssaSessionKey } = request.locals.userSession;
 
-        return async (request, response, next) => {
-          try {
-            const sessionKey = request.header('Authorization');
-
-            // Missing Authorization header.
-            if (!sessionKey) {
-              handleMissingAuthorizationHeader(response, next);
-              return;
-            }
-
-            const userSession = await findUserSessionBySessionKey(sessionKey);
-
-            // If supplied uclcssaSessionKey does not exist in records, we return
-            // 403 Forbidden.
-            if (!userSession) {
-              handleInvalidSessionKey(response, next);
-              return;
-            }
-
-            const { lastUsed } = userSession;
-
-            const lastUsedDatetime = moment(lastUsed);
-            const currentDatetime = moment();
-
-            // Ensure uclcssaSessionKey is still valid.
-            if (
-              isSessionExpired(expirationTimeS)(lastUsedDatetime, currentDatetime)
-            ) {
-              handleExpiredSessionKey(response, next);
-              return;
-            }
-
-            // We clear associated wechat sessionKey and uclapi token with the
-            // given uclcssaSessionKey. This invalidates the user session.
-            await clearUserSession(sessionKey);
-
-            // We simply send 200 OK if logging out is successful.
-            response.status(200);
-            response.type(ContentType.JSON);
-            response.end();
-            next();
-          } catch (error) {
-            next(error);
+          if (!uclcssaSessionKey) {
+            debug('createLogoutHandler needs registrationTierValidator' +
+              ' mounted before.');
+            throw new Error('Missing registrationTierValidator middleware.');
           }
-        };
+
+          // We clear associated wechat sessionKey and uclapi token with the
+          // given uclcssaSessionKey. This invalidates the user session.
+          await clearUserSession(uclcssaSessionKey);
+
+          // We simply send 200 OK if logging out is successful.
+          response.status(200);
+          response.type(ContentType.JSON);
+          response.end();
+          next();
+        } catch (error) {
+          next(error);
+        }
       };
+    };
 
 export default createLogoutHandler;

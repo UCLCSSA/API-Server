@@ -1,20 +1,21 @@
 import express from 'express';
 
-import config from '../../config/config';
+import requireRegistrationTier
+  from '../common/require-registration-tier.validator';
 
 import createLogoutHandler from './logout.handler';
 
-import findUserSessionBySessionKey
-  from './helpers/find-user-session-by-session-key';
 import clearUserSession from './helpers/clear-user-session';
+
+import RegistrationTier from '../common/registration-tier';
 
 const logoutRouter = express.Router();
 
-const expirationTimeS = config.get('uclcssaSessionKeyExpirationTimeS');
+const logoutHandler = createLogoutHandler(clearUserSession);
 
-const logoutHandler =
-  createLogoutHandler(findUserSessionBySessionKey)(clearUserSession)(expirationTimeS);
-
-logoutRouter.post('/logout', logoutHandler);
+logoutRouter.post('/logout',
+  requireRegistrationTier(RegistrationTier.WECHAT_REGISTERED),
+  logoutHandler
+);
 
 export default logoutRouter;

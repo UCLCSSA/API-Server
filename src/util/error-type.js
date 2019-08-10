@@ -10,7 +10,9 @@ const ErrorType = {
   UNAUTHORIZED: {
     EXPIRED_UCLCSSA_SESSION_KEY: '@unauthorized/expired-uclcssa-session-key',
     FAILED_WECHAT_AUTHENTICATION: '@unauthorized/failed-wechat-authentication',
-    INVALID_UCLCSSA_SESSION_KEY: '@unauthorized/invalid-uclcssa-session-key'
+    INVALID_UCLCSSA_SESSION_KEY: '@unauthorized/invalid-uclcssa-session-key',
+    WECHAT_UNREGISTERED: '@unauthorized/wechat-unregistered',
+    UCLAPI_UNREGISTERED: '@unauthorized/uclapi-unregistered'
   },
   INTERNAL_SERVER_ERROR: {
     FAILED_UCLCSSA_SESSION_KEY_GENERATION:
