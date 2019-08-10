@@ -18,5 +18,6 @@
     "userPassword": "123456",
     "databaseName": "uclcssa_development",
     "connectionLimit": 10
-  }
+  },
+  "uclcssaSessionKeyExpirationTimeS": 2592000
 }
