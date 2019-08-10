@@ -12,7 +12,8 @@ const findUserSessionByOpenId = wechatOpenId =>
         WechatOpenId, 
         WechatSessionKey, 
         UclapiToken, 
-        CreationDatetime
+        CreationDatetime,
+        LastUsed
       FROM UserSessions
       WHERE
         WechatOpenId = ?;
@@ -39,7 +40,8 @@ const findUserSessionByOpenId = wechatOpenId =>
           WechatOpenId,
           WechatSessionKey,
           UclapiToken,
-          CreationDatetime
+          CreationDatetime,
+          LastUsed
         } = matchingUserSession;
 
         return {
@@ -47,7 +49,8 @@ const findUserSessionByOpenId = wechatOpenId =>
           creationDatetime: CreationDatetime,
           wechatOpenId: WechatOpenId,
           wechatSessionKey: WechatSessionKey,
-          uclapiToken: UclapiToken
+          uclapiToken: UclapiToken,
+          lastUsed: LastUsed
         };
       });
     };

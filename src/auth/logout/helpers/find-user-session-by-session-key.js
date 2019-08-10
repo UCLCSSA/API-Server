@@ -2,8 +2,16 @@ import debug from '../../../debug/debug';
 
 import { getPool } from '../../../persistence/db-connection';
 
-const findUserSessionBySessionKey = uclcssaSessionKey =>
-  new Promise((resolve, reject) => {
+import { isNonEmptyString } from '../../../util/is-non-empty-string';
+
+const findUserSessionBySessionKey = uclcssaSessionKey => {
+  // Ensure uclcssaSessionKey is NOT empty string as the default value for
+  // uclcssaSessionKey is empty string in the database.
+  if (!isNonEmptyString(uclcssaSessionKey)) {
+    return Promise.resolve(null);
+  }
+
+  return new Promise((resolve, reject) => {
     const pool = getPool();
 
     const findUserSessionQuery = `
@@ -12,7 +20,8 @@ const findUserSessionBySessionKey = uclcssaSessionKey =>
         WechatOpenId, 
         WechatSessionKey, 
         UclapiToken, 
-        CreationDatetime
+        CreationDatetime,
+        LastUsed
       FROM UserSessions
       WHERE
           UclcssaSessionKey = ?;
@@ -31,14 +40,31 @@ const findUserSessionBySessionKey = uclcssaSessionKey =>
 
         if (!matchingUserSession) {
           debug('No matching user session found.');
-          return false;
+          return null;
         }
 
-        return true;
+        const {
+          UclcssaSessionKey,
+          WechatOpenId,
+          WechatSessionKey,
+          UclapiToken,
+          CreationDatetime,
+          LastUsed
+        } = matchingUserSession;
+
+        return {
+          uclcssaSessionKey: UclcssaSessionKey,
+          creationDatetime: CreationDatetime,
+          wechatOpenId: WechatOpenId,
+          wechatSessionKey: WechatSessionKey,
+          uclapiToken: UclapiToken,
+          lastUsed: LastUsed
+        };
       });
     };
 
     pool.query(findUserSessionQuery, [uclcssaSessionKey], handler);
   });
+};
 
 export default findUserSessionBySessionKey;

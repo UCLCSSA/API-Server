@@ -17,9 +17,10 @@ const insertUserSession =
                                 CreationDatetime,
                                 WechatOpenId,
                                 WechatSessionKey,
-                                UclapiToken )
+                                UclapiToken,
+                                LastUsed )
       VALUES
-          ( ?, ?, ?, ?, ? );
+          ( ?, ?, ?, ?, ?, ? );
     `;
 
     const handler = (error, result) => {
@@ -37,7 +38,9 @@ const insertUserSession =
       creationDatetime,
       wechatOpenId,
       wechatSessionKey,
-      uclapiToken
+      uclapiToken,
+      // lastUsed same as creationDatetime since session is generated
+      creationDatetime
     ], handler);
   });
 

@@ -14,6 +14,7 @@ describe('/logout route handler', () => {
   let findUserSession;
   let clearUserSession;
   let handler;
+  const expirationTimeS = 1;
 
   beforeEach(() => {
     fakeRequest = {
@@ -27,7 +28,7 @@ describe('/logout route handler', () => {
     fakeNext = sinon.fake();
     findUserSession = sinon.fake.resolves(false);
     clearUserSession = sinon.fake.resolves(null);
-    handler = createLogoutHandler(findUserSession)(clearUserSession);
+    handler = createLogoutHandler(findUserSession)(clearUserSession)(expirationTimeS);
   });
 
   it('should return 400 bad request for missing Authorization header',
@@ -43,14 +44,14 @@ describe('/logout route handler', () => {
   it('should throw error for missing findUserSession dependency',
     () => {
       expect(
-        () => createLogoutHandler(null)(clearUserSession)
+        () => createLogoutHandler(null)(clearUserSession)(0)
       ).to.throw();
     });
 
   it('should throw error for missing clearUserSession dependency',
     () => {
       expect(
-        () => createLogoutHandler(findUserSession)(null)
+        () => createLogoutHandler(findUserSession)(null)(0)
       ).to.throw();
     });
 
@@ -62,7 +63,7 @@ describe('/logout route handler', () => {
 
       findUserSession = sinon.fake.resolves(false);
 
-      handler = createLogoutHandler(findUserSession)(clearUserSession);
+      handler = createLogoutHandler(findUserSession)(clearUserSession)(expirationTimeS);
 
       await handler(fakeRequest, fakeResponse, fakeNext);
 
@@ -81,7 +82,7 @@ describe('/logout route handler', () => {
       findUserSession = sinon.fake.resolves(true);
       clearUserSession = sinon.fake.resolves(null);
 
-      handler = createLogoutHandler(findUserSession)(clearUserSession);
+      handler = createLogoutHandler(findUserSession)(clearUserSession)(expirationTimeS);
 
       await handler(fakeRequest, fakeResponse, fakeNext);
 
@@ -97,7 +98,7 @@ describe('/logout route handler', () => {
       findUserSession = sinon.fake.resolves(true);
       clearUserSession = sinon.fake.resolves(null);
 
-      handler = createLogoutHandler(findUserSession)(clearUserSession);
+      handler = createLogoutHandler(findUserSession)(clearUserSession)(expirationTimeS);
 
       await handler(fakeRequest, fakeResponse, fakeNext);
 
@@ -105,4 +106,6 @@ describe('/logout route handler', () => {
         .to.equal(true);
       expect(fakeNext.calledOnce).to.equal(true);
     });
+
+  it('should return 403 Forbidden if session key is expired', () => {});
 });

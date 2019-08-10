@@ -7,7 +7,8 @@ const ErrorType = {
   },
   FORBIDDEN: {
     FAILED_WECHAT_AUTHENTICATION: '@forbidden/failed-wechat-authentication',
-    INVALID_UCLCSSA_SESSION_KEY: '@forbidden/invalid-uclcssa-session-key'
+    INVALID_UCLCSSA_SESSION_KEY: '@forbidden/invalid-uclcssa-session-key',
+    EXPIRED_UCLCSSA_SESSION_KEY: '@forbidden/expired-uclcssa-session-key'
   },
   INTERNAL_SERVER_ERROR: {
     FAILED_UCLCSSA_SESSION_KEY_GENERATION:

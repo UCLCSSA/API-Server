@@ -18,7 +18,8 @@ const updateUserSession =
         UclcssaSessionKey = ?,
         WechatSessionKey = ?,
         UclapiToken = ?,
-        CreationDatetime = ?
+        CreationDatetime = ?,
+        LastUsed = ?
       WHERE
         WechatOpenId = ?;
     `;
@@ -37,6 +38,8 @@ const updateUserSession =
       uclcssaSessionKey,
       wechatSessionKey,
       uclapiToken,
+      creationDatetime,
+      // lastUsed is same as creationDatetime since session is generated
       creationDatetime,
       wechatOpenId
     ], handler);
