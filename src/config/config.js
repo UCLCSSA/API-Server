@@ -22,21 +22,6 @@ const config = convict({
     default: 3000,
     env: 'PORT'
   },
-  rateLimit: {
-    doc: 'Rate limiting settings.',
-    windowMs: {
-      doc: 'Time until request count is reset (milliseconds).',
-      format: 'int',
-      default: 5 * 60 * 1000,
-      env: 'RATE_LIMIT_WINDOW_MS'
-    },
-    windowMax: {
-      doc: 'Max requests per window period.',
-      format: 'int',
-      default: 100,
-      env: 'RATE_LIMIT_WINDOW_MAX'
-    }
-  },
   logging: {
     doc: 'Log file settings.',
     fileName: {
