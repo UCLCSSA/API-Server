@@ -6,18 +6,18 @@ import HttpStatusCode from '../../util/http-status-code';
 import ContentType from '../../util/http-content-type';
 
 import createBadRequestHandler from '../../util/bad-request.handler';
-import createAccessForbiddenHandler from '../../util/access-forbidden.handler';
+import createUnauthorizedHandler from '../../util/unauthorized.handler';
+
 import createInternalServerErrorHandler
   from '../../util/internal-server-error.handler';
-
 import ErrorType from '../../util/error-type';
 
 const handleMissingKey = createBadRequestHandler(
   ErrorType.BAD_REQUEST.MISSING_REQUIRED_KEYS
 );
 
-const handleWechatAuthenticatedFailed = createAccessForbiddenHandler(
-  ErrorType.FORBIDDEN.FAILED_WECHAT_AUTHENTICATION
+const handleWechatAuthenticatedFailed = createUnauthorizedHandler(
+  ErrorType.UNAUTHORIZED.FAILED_WECHAT_AUTHENTICATION
 );
 
 const handleGenerateUclcssaSessionKeyFailed = createInternalServerErrorHandler(

@@ -31,11 +31,11 @@ describe('/logout route handler', () => {
     handler = createLogoutHandler(findUserSession)(clearUserSession)(expirationTimeS);
   });
 
-  it('should return 400 bad request for missing Authorization header',
+  it('should return 403 Forbidden for missing Authorization header',
     async () => {
       await handler(fakeRequest, fakeResponse, fakeNext);
 
-      expect(fakeResponse.status.calledWith(HttpStatusCode.BAD_REQUEST))
+      expect(fakeResponse.status.calledWith(HttpStatusCode.FORBIDDEN))
         .to.equal(true);
       expect(fakeResponse.type.calledWith(ContentType.JSON)).to.equal(true);
       expect(fakeNext.calledOnce).to.equal(true);
@@ -55,7 +55,7 @@ describe('/logout route handler', () => {
       ).to.throw();
     });
 
-  it('should return 403 forbidden for non-existent user session',
+  it('should return 401 Unauthorized for invalid user session',
     async () => {
       fakeRequest = {
         header: sinon.fake.returns('Some-UclcssaSessionKey')
@@ -67,7 +67,7 @@ describe('/logout route handler', () => {
 
       await handler(fakeRequest, fakeResponse, fakeNext);
 
-      expect(fakeResponse.status.calledWith(HttpStatusCode.FORBIDDEN))
+      expect(fakeResponse.status.calledWith(HttpStatusCode.UNAUTHORIZED))
         .to.equal(true);
       expect(fakeResponse.type.calledWith(ContentType.JSON)).to.equal(true);
       expect(fakeNext.calledOnce).to.equal(true);
@@ -104,8 +104,28 @@ describe('/logout route handler', () => {
 
       expect(fakeResponse.status.calledWith(HttpStatusCode.OK))
         .to.equal(true);
+      expect(fakeResponse.type.calledWith(ContentType.JSON))
+        .to.equal(true);
       expect(fakeNext.calledOnce).to.equal(true);
     });
 
-  it('should return 403 Forbidden if session key is expired', () => {});
+  it('should return 401 Unauthorized if session key is expired',
+    async () => {
+      fakeRequest = {
+        header: sinon.fake.returns('Some-UclcssaSessionKey')
+      };
+
+      findUserSession = sinon.fake.resolves(true);
+      clearUserSession = sinon.fake.resolves(null);
+
+      handler = createLogoutHandler(findUserSession)(clearUserSession)(-1);
+
+      await handler(fakeRequest, fakeResponse, fakeNext);
+
+      expect(fakeResponse.status.calledWith(HttpStatusCode.UNAUTHORIZED))
+        .to.equal(true);
+      expect(fakeResponse.type.calledWith(ContentType.JSON))
+        .to.equal(true);
+      expect(fakeNext.calledOnce).to.equal(true);
+    });
 });

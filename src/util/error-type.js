@@ -1,14 +1,16 @@
 const ErrorType = {
   BAD_REQUEST: {
-    MISSING_REQUIRED_KEYS: '@bad-request/missing-required-keys',
-    MISSING_AUTHORIZATION_HEADER: '@bad-request/missing-authorization-header',
     INVALID_API_VERSION: '@bad-request/invalid-api-version',
-    INVALID_EMAIL: '@bad-request/invalid-email'
+    INVALID_EMAIL: '@bad-request/invalid-email',
+    MISSING_REQUIRED_KEYS: '@bad-request/missing-required-keys'
   },
   FORBIDDEN: {
-    FAILED_WECHAT_AUTHENTICATION: '@forbidden/failed-wechat-authentication',
-    INVALID_UCLCSSA_SESSION_KEY: '@forbidden/invalid-uclcssa-session-key',
-    EXPIRED_UCLCSSA_SESSION_KEY: '@forbidden/expired-uclcssa-session-key'
+    MISSING_AUTHORIZATION_HEADER: '@forbidden/missing-authorization-header',
+  },
+  UNAUTHORIZED: {
+    EXPIRED_UCLCSSA_SESSION_KEY: '@unauthorized/expired-uclcssa-session-key',
+    FAILED_WECHAT_AUTHENTICATION: '@unauthorized/failed-wechat-authentication',
+    INVALID_UCLCSSA_SESSION_KEY: '@unauthorized/invalid-uclcssa-session-key'
   },
   INTERNAL_SERVER_ERROR: {
     FAILED_UCLCSSA_SESSION_KEY_GENERATION:

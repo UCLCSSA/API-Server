@@ -72,4 +72,19 @@ describe('/register/wechat route handler', () => {
         () => createWechatRegistrationHandler(auth)(generator)(null)
       ).to.throw();
     });
+
+  it('should return 401 Unauthorized for failing to authenticate via WeChat',
+    async () => {
+      body = { appId: 'present', appSecret: 'present', code: 'code' };
+      auth = sinon.fake.resolves({ });
+
+      handler = createWechatRegistrationHandler(auth)(generator)(save);
+
+      await handler({ body }, fakeRes, fakeNext);
+
+      expect(fakeRes.status.calledWith(HttpStatusCode.UNAUTHORIZED))
+        .to.equal(true);
+      expect(fakeRes.type.calledWith(ContentType.JSON)).to.equal(true);
+      expect(fakeNext.calledOnce).to.equal(true);
+    });
 });
